@@ -5,6 +5,7 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] private int id;
 
+    [SerializeField] private Transform handTransform;
     [SerializeField] private Transform inventoryParent;
     [SerializeField] private Transform equipmentParent;
     [SerializeField] private InventorySlot[] slots;
@@ -80,12 +81,49 @@ public class Inventory : MonoBehaviour
         Debug.Log($"Added {ItemDictionary.Instance.GetItemByID(id)} to inventory!");
     }
 
-    public void UseItem(Item item)
+    private void Dequip(EquipmentSlot slot)
     {
-        item.Use(_charOwner.CharacterStats);
+        if (slot.GetEquipmentType() != ItemType.Consumable)
+        {
+            Destroy(slot.GetCurrentObject());
+        }
+        AddItem(slot.GetCurrentItem().ItemID);
     }
 
-    public InventorySlot GetSlot(int id)
+    private void AddToEquipmentSlot(int slotIndex, Item item)
+    {
+        if (equipmentSlots[slotIndex].GetCurrentItem() != null)
+        {
+            Dequip(equipmentSlots[slotIndex]);
+        }
+        equipmentSlots[slotIndex].SetCurrentItem(item);
+        if (item is Equipment)
+        {
+            var equipment = item as Equipment;
+            GameObject itemObject = Instantiate(equipment.EquipmentObject, handTransform.position, handTransform.rotation, handTransform);
+            itemObject.name = equipment.ItemName;
+            equipmentSlots[slotIndex].SetItemGameObject(itemObject);
+        }
+    }
+
+    public void Equip(Item item)
+    {
+        Debug.Log("Using item");
+        if (item is Resource)
+        {
+            Debug.Log("Item is Resource");
+            return;
+        }
+        for (int i = 0; i < equipmentSlots.Length; i++)
+        {
+            if (item.Type == equipmentSlots[i].GetEquipmentType())
+            {
+                AddToEquipmentSlot(i, item);
+            }
+        }
+    }
+
+    private InventorySlot GetSlot(int id)
     {
         int i = 0;
         for (; i < slots.Length; i++)

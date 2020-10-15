@@ -11,5 +11,4 @@ public class Consumable : Item
         base.Use(player);
         player.AddHealth(healthAddon);
     }
-
 }

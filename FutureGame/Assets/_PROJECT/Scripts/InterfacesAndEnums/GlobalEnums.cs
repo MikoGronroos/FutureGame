@@ -1,8 +1,9 @@
-﻿public enum EquipmentType
+﻿public enum ItemType
 {
     Head,
     Torso,
     Legs,
     Feet,
-    Weapon
+    Weapon,
+    Consumable
 }

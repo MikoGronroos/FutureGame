@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65a69cbb803fb214fa7724f9e6dec0a6, type: 3}
-  m_Name: Simple Axe
+  m_Name: Block
   m_EditorClassIdentifier: 
-  ItemName: Simple Axe
-  ItemID: 3
+  ItemName: Block
+  ItemID: 4
   StackSize: 1
-  Icon: {fileID: 21300000, guid: 724b2645bf1bc55478dbc11dad15905a, type: 3}
+  Icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   Type: 4
   EquipmentObject: {fileID: 3806464539585911541, guid: 7a9d83b227446c84eb0e3ab447e6fa8e, type: 3}

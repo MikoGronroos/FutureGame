@@ -4,8 +4,7 @@
 public class Equipment : Item
 {
 
-    public EquipmentType type;
-    public GameObject equipmentObject;
+    public GameObject EquipmentObject;
 
     public override void Use(CharacterStats player)
     {

@@ -8,6 +8,7 @@ public class Item : ScriptableObject
     public int ItemID;
     public int StackSize;
     public Sprite Icon;
+    public ItemType Type;
 
     public virtual void Use(CharacterStats player)
     {

@@ -88,20 +88,16 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
         return items.Count;
     }
 
-    private void UseItem()
-    {
-        items.Remove(items[0]);
-        CheckEmptyState();
-        RefreshSlotImage();
-        RefreshStackSizeText();
-    }
-
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!isEmpty)
         {
             Debug.Log($"You clicked on {items[0]}");
-            Inventory.Instance.UseItem(items[0]);
+            Inventory.Instance.Equip(items[0]);
+            items.Remove(items[0]);
+            CheckEmptyState();
+            RefreshSlotImage();
+            RefreshStackSizeText();
         }
     }
 }
