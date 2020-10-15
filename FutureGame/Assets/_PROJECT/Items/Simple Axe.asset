@@ -17,4 +17,4 @@ MonoBehaviour:
   StackSize: 1
   Icon: {fileID: 21300000, guid: 724b2645bf1bc55478dbc11dad15905a, type: 3}
   Type: 4
-  EquipmentObject: {fileID: 3806464539585911541, guid: 7a9d83b227446c84eb0e3ab447e6fa8e, type: 3}
+  EquipmentObject: {fileID: 5322581767565294928, guid: cd22cd00351a47540a1c68eb1b69055f, type: 3}
