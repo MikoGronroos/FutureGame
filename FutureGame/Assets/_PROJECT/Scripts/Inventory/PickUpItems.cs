@@ -3,45 +3,34 @@
 public class PickUpItems : MonoBehaviour
 {
 
-
-    [SerializeField] private bool canPickup;
+    [SerializeField] private float handLength;
 
     private CharacterOwner _charOwner;
-    private int _itemID;
-    private GameObject _itemOnGround;
+    private Camera _camera;
 
     private void Awake()
     {
         _charOwner = GetComponent<CharacterOwner>();
+        _camera = Camera.main;
     }
 
     private void Update()
     {
-        if (_charOwner.Input.InteractInput() && canPickup)
+        if (_charOwner.Input.InteractInput())
         {
-            _charOwner.Inventory.AddItem(_itemID);
-            _itemID = 0;
-            canPickup = false;
-            Destroy(_itemOnGround);
-        }
-    }
+            Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            if (Physics.Raycast(ray, out var hit))
+            {
+                Debug.Log(hit.transform.name);
+                if (Vector3.Distance(transform.position, hit.transform.position) > handLength) return;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.GetComponent<ItemOnGround>())
-        {
-            _itemID = other.GetComponent<ItemOnGround>().GetID();
-            _itemOnGround = other.gameObject;
-            canPickup = true;
-        }
-    }
+                var hittedItem = hit.transform.GetComponent<ItemOnGround>();
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.GetComponent<ItemOnGround>())
-        {
-            _itemID = 0;
-            canPickup = false;
+                if (!hittedItem) return;
+
+                _charOwner.Inventory.AddItem(hittedItem.GetID());
+                Destroy(hittedItem.gameObject);
+            }
         }
     }
 

@@ -6,13 +6,38 @@ public class Inventory : MonoBehaviour
     [SerializeField] private int id;
 
     [SerializeField] private Transform inventoryParent;
+    [SerializeField] private Transform equipmentParent;
     [SerializeField] private InventorySlot[] slots;
+    [SerializeField] private EquipmentSlot[] equipmentSlots;
+
+    private CharacterOwner _charOwner;
+
+    private static Inventory _instance;
+
+    public static Inventory Instance
+    {
+        get
+        {
+            return _instance;
+        }
+    }
+
+    private void Awake()
+    {
+        _instance = this;
+        _charOwner = GetComponent<CharacterOwner>();
+    }
+
 
     private void OnValidate()
     {
         if (inventoryParent != null)
         {
             slots = inventoryParent.GetComponentsInChildren<InventorySlot>();
+        }
+        if (equipmentParent != null)
+        {
+            equipmentSlots = equipmentParent.GetComponentsInChildren<EquipmentSlot>();
         }
     }
 
@@ -53,6 +78,11 @@ public class Inventory : MonoBehaviour
         var freeSlot = GetSlot(id);
         freeSlot.AddItemToSlot(ItemDictionary.Instance.GetItemByID(id));
         Debug.Log($"Added {ItemDictionary.Instance.GetItemByID(id)} to inventory!");
+    }
+
+    public void UseItem(Item item)
+    {
+        item.Use(_charOwner.CharacterStats);
     }
 
     public InventorySlot GetSlot(int id)

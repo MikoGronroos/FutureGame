@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class EquipmentSlot : MonoBehaviour
 {
 
+    [SerializeField] private EquipmentType slotType;
     [SerializeField] private Item currentItem;
 
     private Sprite _slotDefaultSprite;

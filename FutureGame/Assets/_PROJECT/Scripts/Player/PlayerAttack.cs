@@ -25,7 +25,8 @@ public class PlayerAttack : MonoBehaviour, IAttack
 
     public void Attack()
     {
-        if (Physics.Raycast(_camera.transform.position, transform.forward,  out var hit))
+        Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        if (Physics.Raycast(ray,  out var hit))
         {
             var distance = Vector3.Distance(_charOwner.transform.position, hit.transform.position);
 

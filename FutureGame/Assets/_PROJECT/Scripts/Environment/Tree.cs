@@ -5,13 +5,7 @@ public class Tree : MonoBehaviour, IDamageable
 
     [SerializeField] private float health;
     [SerializeField] private GameObject TreeItem;
-
-    private Rigidbody _rigidbody;
-
-    private void Awake()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-    }
+    [SerializeField] private LootTable lootTable;
 
     public void MakeDamage(float amount)
     {
@@ -25,7 +19,11 @@ public class Tree : MonoBehaviour, IDamageable
     private void TreeFall()
     {
         Debug.Log("Tree has fallen");
-        SpawnItemObject.Instance.SpawnItem(new Vector3(transform.position.x, transform.position.y - transform.localScale.y / 2, transform.position.z), TreeItem);
+        var loot = lootTable.GetLoot();
+        for (int i = 0; i < loot.Length; i++)
+        {
+            SpawnItemObject.Instance.SpawnItem(new Vector3(transform.position.x, transform.position.y - transform.localScale.y / 2, transform.position.z), TreeItem, loot[i]);
+        }
         Destroy(gameObject);
     }
 

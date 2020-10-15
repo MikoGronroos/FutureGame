@@ -10,4 +10,9 @@ public class ItemOnGround : MonoBehaviour
         return itemID;
     }
 
+    public void SetID(int id)
+    {
+        itemID = id;
+    }
+
 }

@@ -15,5 +15,5 @@ MonoBehaviour:
   ItemName: Health Potion
   ItemID: 2
   StackSize: 10
-  Icon: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  Icon: {fileID: 21300000, guid: c6f4fad4c9b14c047b4d66d783cae99f, type: 3}
   healthAddon: 25

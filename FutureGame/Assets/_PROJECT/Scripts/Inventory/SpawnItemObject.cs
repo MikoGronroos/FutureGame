@@ -18,9 +18,10 @@ public class SpawnItemObject : MonoBehaviour
         _instance = this;
     }
 
-    public void SpawnItem(Vector3 pos, GameObject itemObj)
+    public void SpawnItem(Vector3 pos, GameObject itemObj, int id)
     {
         GameObject item = Instantiate(itemObj, pos, Quaternion.identity);
+        item.GetComponent<ItemOnGround>().SetID(id);
     }
 
 }

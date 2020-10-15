@@ -15,7 +15,6 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     private Image _image;
     private Sprite _icon;
     private TextMeshProUGUI _stackSizeText;
-    private CharacterStats _charStats;
 
     public bool IsEmpty { get { return isEmpty; } private set { } }
     public int StackSize { get { return stackSize; } set { stackSize = value; } }
@@ -30,7 +29,6 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
 
     private void Awake()
     {
-        _charStats = FindObjectOfType<CharacterStats>();
         _stackSizeText = GetComponentInChildren<TextMeshProUGUI>();
     }
 
@@ -92,7 +90,6 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
 
     private void UseItem()
     {
-        items[0].Use(_charStats);
         items.Remove(items[0]);
         CheckEmptyState();
         RefreshSlotImage();
@@ -104,7 +101,7 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
         if (!isEmpty)
         {
             Debug.Log($"You clicked on {items[0]}");
-            UseItem();
+            Inventory.Instance.UseItem(items[0]);
         }
     }
 }
