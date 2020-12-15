@@ -5,10 +5,19 @@ public class Equipment : Item
 {
 
     public GameObject EquipmentObject;
+    public EquipmentType EquipmentType;
+    public bool isEquipped = false;
 
-    public override void Use(CharacterStats player)
+    public override void Use(InventorySlot slot)
     {
-        base.Use(player);
+        if (!isEquipped)
+        {
+            base.Use(slot);
+            CharacterOwner.Instance.Inventory.Equip(this);
+        }
+        else
+        {
+            CharacterOwner.Instance.Inventory.Dequip(this);
+        }
     }
-
 }

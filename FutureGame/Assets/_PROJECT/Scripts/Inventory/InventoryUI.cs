@@ -8,9 +8,11 @@ public class InventoryUI : MonoBehaviour
     private bool invIsOpen;
     private CharacterOwner _charOwner;
     private CameraLook _cameraLook;
+    private CharacterMovement _charMovement;
 
     private void Awake()
     {
+        _charMovement = FindObjectOfType<CharacterMovement>();
         _charOwner = FindObjectOfType<CharacterOwner>();
         _cameraLook = FindObjectOfType<CameraLook>();
     }
@@ -34,6 +36,7 @@ public class InventoryUI : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        _charMovement.enabled = false;
         _cameraLook.enabled = false;
         inventoryPanel.SetActive(true);
         invIsOpen = true;
@@ -43,6 +46,7 @@ public class InventoryUI : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        _charMovement.enabled = true;
         _cameraLook.enabled = true;
         inventoryPanel.SetActive(false);
         invIsOpen = false;

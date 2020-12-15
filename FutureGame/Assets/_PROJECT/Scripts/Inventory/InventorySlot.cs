@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
@@ -10,15 +9,19 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     [SerializeField] private bool isEmpty;
     [SerializeField] private int itemID;
     [SerializeField] private int stackSize;
-    [SerializeField] private List<Item> items = new List<Item>();
+    [SerializeField] private int amountOfItems;
+
+    [SerializeField] private Item item;
 
     private Image _image;
     private Sprite _icon;
     private TextMeshProUGUI _stackSizeText;
+    private CharacterOwner _charOwner;
 
     public bool IsEmpty { get { return isEmpty; } private set { } }
     public int StackSize { get { return stackSize; } set { stackSize = value; } }
     public int ItemID { get { return itemID; } set { itemID = value; } }
+    public int AmountOfItems { get { return amountOfItems; } private set { } }
 
     private void OnValidate()
     {
@@ -30,6 +33,7 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     private void Awake()
     {
         _stackSizeText = GetComponentInChildren<TextMeshProUGUI>();
+        _charOwner = FindObjectOfType<CharacterOwner>();
     }
 
     private void Start()
@@ -40,12 +44,12 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
 
     private void RefreshStackSizeText()
     {
-        _stackSizeText.text = GetItemAmount().ToString();
+        _stackSizeText.text = amountOfItems.ToString();
     }
 
     private void CheckEmptyState()
     {
-        if (items.Count <= 0)
+        if (amountOfItems <= 0)
         {
             isEmpty = true;
         }
@@ -77,24 +81,48 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
             stackSize = item.StackSize;
             itemID = item.ItemID;
             isEmpty = false;
+            this.item = item;
+            amountOfItems++;
             RefreshSlotImage();
         }
-        items.Add(item);
+        else
+        {
+            amountOfItems++;
+        }
         RefreshStackSizeText();
     }
 
-    public int GetItemAmount()
+    public void RemoveItem()
     {
-        return items.Count;
+        if (amountOfItems > 1)
+        {
+            amountOfItems--;
+        }
+        else
+        {
+            item = null;
+            amountOfItems--;
+        }
+        CheckEmptyState();
+        RefreshSlotImage();
+        RefreshStackSizeText();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!isEmpty)
         {
-            Debug.Log($"You clicked on {items[0]}");
-            Inventory.Instance.Equip(items[0]);
-            items.Remove(items[0]);
+            Debug.Log($"You clicked on {item}");
+            if (_charOwner.Inventory.GetAmountOfItemsInDictionary(itemID) > 1)
+            {
+                _charOwner.Inventory.RemoveItemFromDictionaryWithKey(itemID);
+                Debug.Log($"{_charOwner.Inventory.GetItemFromDictionary(itemID).ToString()}");
+            }
+            else
+            {
+                _charOwner.Inventory.RemoveItemCompletelyFromDictionary(itemID);
+            }
+            item.Use(this);
             CheckEmptyState();
             RefreshSlotImage();
             RefreshStackSizeText();

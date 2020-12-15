@@ -1,4 +1,4 @@
 ﻿public interface IMovement
 {
-    void MoveCharacter();
+    void Movement(float horizontalInput, float verticalInput);
 }

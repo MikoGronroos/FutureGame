@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fb742d2abe5e1446b38efad005743b1, type: 3}
+  m_Name: Campfire
+  m_EditorClassIdentifier: 
+  BuildingId: 1
+  BuildingName: Campfire
+  BuildingIcon: {fileID: 21300000, guid: 27412e4e185ef0a4c96e1805af0f9ebb, type: 3}
+  InspectElement: {fileID: 4700465261720191754, guid: f12dedbf9b1b8a844b163426f345da48, type: 3}
+  RealElement: {fileID: 4700465261720191754, guid: d13fc5427ceb54941b227b5afd5084bb, type: 3}

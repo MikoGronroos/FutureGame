@@ -4,9 +4,8 @@
 public class Resource : Item
 {
 
-    public override void Use(CharacterStats player)
+    public override void Use(InventorySlot slot)
     {
-        base.Use(player);
     }
 
 }

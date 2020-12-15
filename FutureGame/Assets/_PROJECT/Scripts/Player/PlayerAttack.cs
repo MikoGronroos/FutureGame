@@ -1,13 +1,24 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour, IAttack
 {
 
-    [SerializeField] private float allowedDistance;
+    [SerializeField] private float range;
     [SerializeField] private float damage;
+    [SerializeField] private float speed;
+
+    [SerializeField] private bool hasAttacked;
+
+    [SerializeField] private LayerMask ignoreMask;
+
+    [SerializeField] private EquipmentSlot handSlot;
+    [SerializeField] private float damageReduceMultiplier = 0.135f;
 
     private CharacterOwner _charOwner;
     private Camera _camera;
+
+    public float Damage { get { return damage; } set { damage = value; } }
 
     private void Awake()
     {
@@ -23,19 +34,78 @@ public class PlayerAttack : MonoBehaviour, IAttack
         }
     }
 
+    public void ChangeStats(float damage, float dist, float speed)
+    {
+        SetDamage(damage);
+        SetRange(dist);
+        SetSpeed(speed);
+    }
+
+    private void SetSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+
+    private void SetRange(float dist)
+    {
+        range = dist;
+    }
+
+    private void SetDamage(float damage)
+    {
+        this.damage = damage;
+    }
+
+    IEnumerator AttackSpeedCalc()
+    {
+
+        hasAttacked = true;
+
+        yield return new WaitForSeconds(speed);
+
+        hasAttacked = false;
+
+        yield return null;
+    }
+
     public void Attack()
     {
-        Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        if (Physics.Raycast(ray,  out var hit))
-        {
-            var distance = Vector3.Distance(_charOwner.transform.position, hit.transform.position);
 
-            if (distance > allowedDistance) return;
+        if (hasAttacked)
+        {
+            return;
+        }
+        else
+        {
+            StartCoroutine(AttackSpeedCalc());
+        }
+
+        Debug.Log("Attacked");
+
+        Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        if (Physics.Raycast(ray,  out var hit, range, ~ignoreMask))
+        {
 
             var hittedObj = hit.transform.GetComponent<IDamageable>();
+            Debug.Log(hittedObj);
             if (hittedObj != null)
             {
-                hittedObj.MakeDamage(damage);
+                if (hittedObj.WeaponType == WeaponType.None)
+                {
+                    hittedObj.MakeDamage(damage);
+                }
+                var handType = handSlot.GetCurrentItem() as Weapon;
+
+                if (handType == null) return;
+
+                if (hittedObj.WeaponType == handType.WeaponType)
+                {
+                    hittedObj.MakeDamage(damage);
+                }
+                else
+                {
+                    hittedObj.MakeDamage(damage * damageReduceMultiplier);
+                }
             }
         }
     }

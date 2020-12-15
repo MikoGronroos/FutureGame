@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class Inventory : MonoBehaviour
 {
@@ -13,19 +14,10 @@ public class Inventory : MonoBehaviour
 
     private CharacterOwner _charOwner;
 
-    private static Inventory _instance;
-
-    public static Inventory Instance
-    {
-        get
-        {
-            return _instance;
-        }
-    }
+    private Dictionary<int, ItemAmountInInventory> _itemsInInventory = new Dictionary<int, ItemAmountInInventory>();
 
     private void Awake()
     {
-        _instance = this;
         _charOwner = GetComponent<CharacterOwner>();
     }
 
@@ -64,7 +56,7 @@ public class Inventory : MonoBehaviour
             if (slots[i].IsEmpty)
             {
                 return false;
-            }else if (slots[i].GetItemAmount() < slots[i].StackSize)
+            }else if (slots[i].AmountOfItems < slots[i].StackSize)
             {
                 return false;
             }
@@ -77,50 +69,76 @@ public class Inventory : MonoBehaviour
         if (IsFull()) return;
 
         var freeSlot = GetSlot(id);
+
+        if (!_itemsInInventory.ContainsKey(id))
+        {
+            ItemAmountInInventory item = new ItemAmountInInventory(id);
+            _itemsInInventory.Add(id, item);
+            Debug.Log($"{item.ToString()}");
+        }
+        else
+        {
+            _itemsInInventory[id].AddItem();
+        }
+
         freeSlot.AddItemToSlot(ItemDictionary.Instance.GetItemByID(id));
-        Debug.Log($"Added {ItemDictionary.Instance.GetItemByID(id)} to inventory!");
     }
 
-    private void Dequip(EquipmentSlot slot)
+    public void RemoveItemFromSlot(InventorySlot slot)
     {
-        if (slot.GetEquipmentType() != ItemType.Consumable)
-        {
-            Destroy(slot.GetCurrentObject());
-        }
-        AddItem(slot.GetCurrentItem().ItemID);
+        slot.RemoveItem();
     }
 
     private void AddToEquipmentSlot(int slotIndex, Item item)
     {
         if (equipmentSlots[slotIndex].GetCurrentItem() != null)
         {
-            Dequip(equipmentSlots[slotIndex]);
+            Dequip(item);
         }
         equipmentSlots[slotIndex].SetCurrentItem(item);
         if (item is Equipment)
         {
             var equipment = item as Equipment;
-            GameObject itemObject = Instantiate(equipment.EquipmentObject, handTransform.position, handTransform.rotation, handTransform);
+            GameObject itemObject = Instantiate(equipment.EquipmentObject, handTransform.position, Quaternion.Euler(0, handTransform.eulerAngles.y + equipment.EquipmentObject.transform.eulerAngles.y, 0), handTransform);
             itemObject.name = equipment.ItemName;
             equipmentSlots[slotIndex].SetItemGameObject(itemObject);
+            if (equipment is Weapon)
+            {
+                var weapon = equipment as Weapon;
+                _charOwner.PlayerAttack.ChangeStats(weapon.damage, weapon.range, weapon.speed);
+            }
         }
     }
 
     public void Equip(Item item)
     {
         Debug.Log("Using item");
-        if (item is Resource)
+        AddToEquipmentSlot(FindEquipmentSlotWithTag(item), item);
+    }
+
+    public void Dequip(Item item)
+    {
+
+        var slot = equipmentSlots[FindEquipmentSlotWithTag(item)];
+
+        if (slot.GetCurrentObject())
         {
-            Debug.Log("Item is Resource");
-            return;
+            Destroy(slot.GetCurrentObject());
         }
+        AddItem(slot.GetCurrentItem().ItemID);
+    }
+
+    public int FindEquipmentSlotWithTag(Item item)
+    {
+        var equipment = item as Equipment;
         for (int i = 0; i < equipmentSlots.Length; i++)
         {
-            if (item.Type == equipmentSlots[i].GetEquipmentType())
+            if (equipment.EquipmentType == equipmentSlots[i].GetEquipmentType())
             {
-                AddToEquipmentSlot(i, item);
+                return i;
             }
         }
+        return 0;
     }
 
     private InventorySlot GetSlot(int id)
@@ -128,17 +146,101 @@ public class Inventory : MonoBehaviour
         int i = 0;
         for (; i < slots.Length; i++)
         {
-            if (slots[i].GetItemAmount() < slots[i].StackSize && slots[i].ItemID == id)
+            if (slots[i].AmountOfItems < slots[i].StackSize && slots[i].ItemID == id)
             {
-                Debug.Log($"This was sent from StackSize {i}");
                 return slots[i];
             }
             else if (slots[i].IsEmpty)
             {
-                Debug.Log($"This was sent from IsEmpty {i}");
                 return slots[i];
             }
         }
         return null;
     }
+
+    public InventorySlot GetSlotWithItem(int id)
+    {
+        int i = 0;
+        for (; i < slots.Length; i++)
+        {
+            if (slots[i].ItemID == id)
+            {
+                return slots[i];
+            }
+        }
+        return null;
+    }
+
+    public void RemoveItemFromInventoryWithId(int id)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].ItemID == id)
+            {
+                slots[i].RemoveItem();
+                _itemsInInventory[id].RemoveItem();
+            }
+        }
+    }
+
+    #region InventoryDictionary
+
+    public void RemoveItemFromDictionaryWithKey(int key)
+    {
+        _itemsInInventory[key].RemoveItem();
+    }
+
+    public int GetAmountOfItemsInDictionary(int key)
+    {
+        if (!_itemsInInventory.ContainsKey(key)) return 0;
+
+        return _itemsInInventory[key].GetAmountOfItems();
+    }
+
+    public void RemoveItemCompletelyFromDictionary(int key)
+    {
+        _itemsInInventory.Remove(key);
+    }
+
+    public ItemAmountInInventory GetItemFromDictionary(int key)
+    {
+        return _itemsInInventory[key];
+    }
+
+    #endregion
+
 }
+
+public class ItemAmountInInventory
+{
+    int _itemId;
+    int _amountOfItems = 0;
+
+    public ItemAmountInInventory(int id)
+    {
+        _itemId = id;
+        AddItem();
+    }
+
+    public void AddItem()
+    {
+        _amountOfItems++;
+    }
+
+    public void RemoveItem()
+    {
+        _amountOfItems--;
+    }
+
+    public int GetAmountOfItems()
+    {
+        return _amountOfItems;
+    }
+
+    public override string ToString()
+    {
+        return $"item id = {_itemId}, item amount = {_amountOfItems}";
+    }
+
+}
+

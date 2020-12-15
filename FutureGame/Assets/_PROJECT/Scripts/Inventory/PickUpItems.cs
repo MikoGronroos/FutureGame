@@ -21,7 +21,6 @@ public class PickUpItems : MonoBehaviour
             Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             if (Physics.Raycast(ray, out var hit))
             {
-                Debug.Log(hit.transform.name);
                 if (Vector3.Distance(transform.position, hit.transform.position) > handLength) return;
 
                 var hittedItem = hit.transform.GetComponent<ItemOnGround>();

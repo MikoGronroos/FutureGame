@@ -9,12 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65a69cbb803fb214fa7724f9e6dec0a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e9762d18b00a6c45af696528d166795, type: 3}
   m_Name: Simple Axe
   m_EditorClassIdentifier: 
   ItemName: Simple Axe
   ItemID: 3
   StackSize: 1
   Icon: {fileID: 21300000, guid: 724b2645bf1bc55478dbc11dad15905a, type: 3}
-  Type: 4
+  type: 0
   EquipmentObject: {fileID: 5322581767565294928, guid: cd22cd00351a47540a1c68eb1b69055f, type: 3}
+  EquipmentType: 4
+  isEquipped: 0
+  WeaponType: 1
+  damage: 10
+  range: 10
+  speed: 1

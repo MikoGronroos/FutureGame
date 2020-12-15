@@ -4,72 +4,72 @@ public class CharacterMovement : MonoBehaviour, IMovement
 {
 
     [SerializeField] private float currentSpeed;
-    [SerializeField] private float runningSpeed;
+
     [SerializeField] private float walkingSpeed;
-    [SerializeField] private float turnSmoothTime = 0.1f;
-    [SerializeField] private float _rollingForce;
 
     [SerializeField] private bool running;
+    [SerializeField] private float runningSpeed;
+    [SerializeField] private float runningStaminaReduce;
+
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpingStaminaReduce;
+
+    [SerializeField] private float gravity;
+
+    private Vector3 moveDirection = Vector3.zero;
 
     private CharacterOwner _charOwner;
-    private Rigidbody _rigidbody;
-    private Camera _camera;
-
-    private float _turnSmoothVelocity;
+    private CharacterController _controller;
 
     //Input
-    private Vector3 _movementInput;
-    [SerializeField] private bool _grounded;
-    private bool _rolling;
+    private float _horizontalInput;
+    private float _verticalInput;
+
+    private bool _hasJumped;
 
     private void Awake()
     {
         _charOwner = GetComponent<CharacterOwner>();
-        _rigidbody = GetComponent<Rigidbody>();
-        _camera = Camera.main;
+        _controller = GetComponent<CharacterController>();
     }
 
     private void Update()
     {
         HandleInput();
-        currentSpeed = running ? runningSpeed : walkingSpeed;
-    }
-
-    private void FixedUpdate()
-    {
-        MoveCharacter();
-        Roll();
+        if (running)
+        {
+            _charOwner.CharacterStats.ReduceStamina(runningStaminaReduce * Time.deltaTime);
+            currentSpeed = runningSpeed;
+        }
+        else
+        {
+            currentSpeed = walkingSpeed;
+        }
+        Movement(_horizontalInput, _verticalInput);
     }
 
     private void HandleInput()
     {
-        _movementInput = _charOwner.Input.MovementInput();
-        _grounded = _charOwner.GroundCheck.Grounded();
+        _horizontalInput = _charOwner.Input.HorizontalInput();
+        _verticalInput = _charOwner.Input.VerticalInput();
         running = _charOwner.Input.RunInput();
-        _charOwner.Input.RollInput(_rolling);
+        _hasJumped = _charOwner.Input.JumpInput();
     }
 
-    public void MoveCharacter()
+    public void Movement(float horizontalInput, float verticalInput)
     {
-        if (!_grounded || _rolling) return;
-
-        float targetAngle = Mathf.Atan2(_movementInput.x, _movementInput.z) * Mathf.Rad2Deg + _camera.transform.eulerAngles.y;
-        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime);
-        transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-        if (_movementInput.magnitude >= 0.1f)
+        if (_controller.isGrounded)
         {
-            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            _rigidbody.velocity = moveDir.normalized * currentSpeed;
+            moveDirection = new Vector3(horizontalInput, 0, verticalInput);
+            moveDirection = transform.TransformDirection(moveDirection);
+            moveDirection *= currentSpeed;
+            if (_hasJumped)
+            {
+                moveDirection.y = jumpForce;
+                _charOwner.CharacterStats.ReduceStamina(jumpingStaminaReduce);
+            }
         }
-    }
-
-    private void Roll()
-    {
-        if (_rolling)
-        {
-            _rigidbody.AddForce(transform.forward * _rollingForce, ForceMode.Force);
-            _rolling = false;
-        }
+        moveDirection.y -= gravity * Time.deltaTime;
+        _controller.Move(moveDirection * Time.deltaTime);
     }
 }

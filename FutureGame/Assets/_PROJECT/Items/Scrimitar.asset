@@ -9,12 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65a69cbb803fb214fa7724f9e6dec0a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e9762d18b00a6c45af696528d166795, type: 3}
   m_Name: Scrimitar
   m_EditorClassIdentifier: 
   ItemName: Scrimitar
   ItemID: 4
   StackSize: 1
   Icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  Type: 4
+  type: 0
   EquipmentObject: {fileID: 3806464539585911541, guid: 7a9d83b227446c84eb0e3ab447e6fa8e, type: 3}
+  EquipmentType: 4
+  isEquipped: 0
+  WeaponType: 0
+  damage: 2

@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class EquipmentSlot : MonoBehaviour
+public class EquipmentSlot : MonoBehaviour, IPointerClickHandler
 {
 
     [SerializeField] private bool isEmpty;
-    [SerializeField] private ItemType slotType;
+    [SerializeField] private EquipmentType slotType;
     [SerializeField] private Item currentItem;
 
     private Sprite _icon;
@@ -44,7 +45,7 @@ public class EquipmentSlot : MonoBehaviour
     }
 
 
-    public ItemType GetEquipmentType()
+    public EquipmentType GetEquipmentType()
     {
         return slotType;
     }
@@ -72,4 +73,8 @@ public class EquipmentSlot : MonoBehaviour
         itemObject = obj;
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        currentItem.Use(null);
+    }
 }

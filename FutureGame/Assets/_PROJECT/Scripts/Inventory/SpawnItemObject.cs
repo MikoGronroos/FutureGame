@@ -3,6 +3,8 @@
 public class SpawnItemObject : MonoBehaviour
 {
 
+    [SerializeField] private GameObject GlobalItemObject;
+
     private static SpawnItemObject _instance;
 
     public static SpawnItemObject Instance
@@ -18,10 +20,11 @@ public class SpawnItemObject : MonoBehaviour
         _instance = this;
     }
 
-    public void SpawnItem(Vector3 pos, GameObject itemObj, int id)
+    public void SpawnItem(Vector3 pos, int id)
     {
-        GameObject item = Instantiate(itemObj, pos, Quaternion.identity);
+        GameObject item = Instantiate(GlobalItemObject, pos, Quaternion.identity);
         item.GetComponent<ItemOnGround>().SetID(id);
+        item.GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
 }

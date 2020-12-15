@@ -46,7 +46,6 @@ public class ItemDictionary : MonoBehaviour
 
     public Item GetItemByID(int id)
     {
-        Debug.Log(id);
         return _allItems[id];
     }
 

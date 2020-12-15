@@ -8,11 +8,11 @@ public class Item : ScriptableObject
     public int ItemID;
     public int StackSize;
     public Sprite Icon;
-    public ItemType Type;
+    public ItemType type;
 
-    public virtual void Use(CharacterStats player)
+    public virtual void Use(InventorySlot slot)
     {
-
+        CharacterOwner.Instance.Inventory.RemoveItemFromSlot(slot);
     }
 
 }
