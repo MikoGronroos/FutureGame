@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private GameObject craftingPanel;
     [SerializeField] private GameObject equipmentPanel;
 
+    //Sleeping
+    [SerializeField] private Image blackScreen;
+    [SerializeField] private TMP_Text sleepingText;
+    
     private bool inventoryOpen;
     private bool craftingOpen;
 
@@ -23,6 +28,12 @@ public class PlayerUI : MonoBehaviour
     {
         inventoryButton.onClick.AddListener(InventoryButton);
         craftingButton.onClick.AddListener(CraftingButton);
+    }
+
+    private void Start()
+    {
+        MessageReceiver.SubscrideToMessage("PlayerSleepingEvent", SleepEvent);
+        MessageReceiver.SubscrideToMessage("PlayerWakeUpEvent", WakeUpEvent);
     }
 
     private void InventoryButton()
@@ -53,6 +64,7 @@ public class PlayerUI : MonoBehaviour
     {
         healthBar.value = currentHealth / maxHealth;
     }
+
     public void UpdateStaminaBar(float currentStamina, float maxStamina)
     {
         staminaBar.value = currentStamina / maxStamina;
@@ -65,6 +77,20 @@ public class PlayerUI : MonoBehaviour
     public void UpdateThirstBar(float currentThirst, float maxThirst)
     {
         thirstBar.value = currentThirst / maxThirst;
+    }
+
+    private void SleepEvent(string name, string message)
+    {
+        Debug.Log("Screen Fade In");
+        sleepingText.enabled = true;
+        blackScreen.ChangeAlpha(1);
+    }
+
+    private void WakeUpEvent(string name, string message)
+    {
+        Debug.Log("Screen Fade Out");
+        sleepingText.enabled = false;
+        blackScreen.ChangeAlpha(0);
     }
 
 }

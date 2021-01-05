@@ -61,6 +61,7 @@ public class DayNightCycle : MonoBehaviour
 
     private void Cycle()
     {
+        TimeOfDay();
         RotateSun();
         Intensity();
         Dusk();
@@ -114,13 +115,6 @@ public class DayNightCycle : MonoBehaviour
                 endIntensity = 0;
                 startIntensity = 0;
                 _lerpValueIntensity.LerpValue = 0;
-                if (_isDay)
-                {
-                    _isDay = false;
-                }else if (!_isDay)
-                {
-                    _isDay = true;
-                }
             }
         }
     }
@@ -173,6 +167,24 @@ public class DayNightCycle : MonoBehaviour
                 fogIsEnabled = true;
                 _lerpValueDusk.LerpValue = 0;
             }
+        }
+    }
+
+    #endregion
+
+    #region TimeOfTheDay
+
+    private void TimeOfDay()
+    {
+        if ((sunAngle.x >= 200 && sunAngle.x < 347) && _isDay) 
+        {
+            _isDay = false;
+            MessageSender.SendMessageToClients("EveningFallsEvent");
+        }
+        else if (sunAngle.x >= 347 && !_isDay)
+        {
+            _isDay = true;
+            MessageSender.SendMessageToClients("MorningRisesEvent");
         }
     }
 
