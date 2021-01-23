@@ -40,6 +40,7 @@ public class InventoryUI : MonoBehaviour
         _cameraLook.enabled = false;
         inventoryPanel.SetActive(true);
         invIsOpen = true;
+        MessageSender.SendMessageToClients("InventoryToggle");
     }
 
     private void CloseInventory()
@@ -50,6 +51,7 @@ public class InventoryUI : MonoBehaviour
         _cameraLook.enabled = true;
         inventoryPanel.SetActive(false);
         invIsOpen = false;
+        MessageSender.SendMessageToClients("InventoryToggle");
     }
 
 }

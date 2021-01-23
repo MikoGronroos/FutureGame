@@ -21,10 +21,7 @@ public class ItemDictionary : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-    }
 
-    private void Start()
-    {
         foreach (Item item in items)
         {
             if (_allItems.ContainsKey(item.ItemID))
@@ -42,11 +39,20 @@ public class ItemDictionary : MonoBehaviour
         {
             Debug.LogWarning("Not All Items Were Loaded");
         }
+
     }
 
     public Item GetItemByID(int id)
     {
-        return _allItems[id];
+        if (_allItems.ContainsKey(id))
+        {
+            return _allItems[id];
+        }
+        else
+        {
+            Debug.LogWarning($"The key {id} is not available in current item dictionary!");
+            return null;
+        }
     }
 
 }

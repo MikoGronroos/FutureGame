@@ -315,6 +315,8 @@ GameObject:
   - component: {fileID: 5307213307737859454}
   - component: {fileID: 5307213307737859449}
   - component: {fileID: 4421242246538662859}
+  - component: {fileID: 7493442190339101543}
+  - component: {fileID: 5974919839302515301}
   - component: {fileID: 5307213307737859453}
   - component: {fileID: 5307213307737859463}
   - component: {fileID: 5307213307737859459}
@@ -411,7 +413,7 @@ CharacterController:
   m_GameObject: {fileID: 5307213307737859451}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Height: 2
   m_Radius: 0.5
@@ -419,6 +421,36 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &7493442190339101543
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5307213307737859451}
+  serializedVersion: 2
+  m_Mass: 80
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 1
+--- !u!136 &5974919839302515301
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5307213307737859451}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5307213307737859453
 MonoBehaviour:
@@ -456,10 +488,12 @@ MonoBehaviour:
   maxStamina: 100
   maxThirst: 100
   maxHunger: 100
+  maxWeight: 75
   currentHealth: 0
   currentStamina: 0
   currentThirst: 0
   currentHunger: 0
+  currentWeight: 0
   isUsingStamina: 0
   weaponTypeAllowedToMakeDamage: 3
 --- !u!114 &5307213307737859459
@@ -555,11 +589,14 @@ MonoBehaviour:
   staminaBar: {fileID: 0}
   hungerBar: {fileID: 0}
   thirstBar: {fileID: 0}
+  weightCounter: {fileID: 0}
   inventoryButton: {fileID: 0}
   craftingButton: {fileID: 0}
   inventoryPanel: {fileID: 0}
   craftingPanel: {fileID: 0}
   equipmentPanel: {fileID: 0}
+  blackScreen: {fileID: 0}
+  sleepingText: {fileID: 0}
 --- !u!114 &5307213307737859461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -694,7 +731,6 @@ MonoBehaviour:
   isDying: 0
   hasThirst: 1
   hasHunger: 1
-  _charOwner: {fileID: 0}
 --- !u!114 &417440071357492701
 MonoBehaviour:
   m_ObjectHideFlags: 0

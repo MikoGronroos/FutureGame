@@ -44,7 +44,7 @@ public class PlayerVitalsManager : MonoBehaviour
                 healthReduction -= healthReductionWithoutFood;
                 hasHunger = true;
             }
-            _charOwner.CharacterStats.ReduceHunger(hungerReduction * Time.deltaTime);
+            _charOwner.CharacterStats.CurrentHunger -= hungerReduction * Time.deltaTime;
         }
 
         if (_charOwner.CharacterStats.CurrentThirst <= 0)
@@ -62,12 +62,12 @@ public class PlayerVitalsManager : MonoBehaviour
                 healthReduction -= healthReductionWithoutDrink;
                 hasThirst = true;
             }
-            _charOwner.CharacterStats.ReduceThirst(thirstReduction * Time.deltaTime);
+            _charOwner.CharacterStats.CurrentThirst -= thirstReduction * Time.deltaTime;
         }
 
         if (!hasThirst || !hasHunger)
         {
-            _charOwner.CharacterStats.ReduceHealth(healthReduction * Time.deltaTime);
+            _charOwner.CharacterStats.CurrentHealth -= healthReduction * Time.deltaTime;
             isDying = true;
         }
         else

@@ -9,5 +9,6 @@ public class Building : ScriptableObject
     public Sprite BuildingIcon;
     public GameObject InspectElement;
     public GameObject RealElement;
+    public Vector2[] NeededItems;
 
 }

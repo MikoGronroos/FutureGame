@@ -17,6 +17,7 @@ public class BuildingPlan : MonoBehaviour
     private Camera _camera;
     private CharacterOwner _charOwner;
     private BuildingUI _buildingUI;
+    private Vector2[] _neededItems;
 
     private int fingerID = -1;
 
@@ -67,7 +68,15 @@ public class BuildingPlan : MonoBehaviour
 
             if (_charOwner.Input.HitInput())
             {
-                PlaceObject(_realObject, currentlyInspecting.transform.position);
+                if (InventoryMethods.CheckIfInventoryHasItems(_neededItems))
+                {
+                    InventoryMethods.RemoveItemsFromInventory(_neededItems);
+                    PlaceObject(_realObject, currentlyInspecting.transform.position);
+                }
+                else
+                {
+                    return;
+                }
             }
         }
     }
@@ -96,6 +105,11 @@ public class BuildingPlan : MonoBehaviour
     public void SetRealObject(GameObject obj)
     {
         _realObject = obj;
+    }
+
+    public void SetNeededItems(Vector2[] array)
+    {
+        _neededItems = array;
     }
 
     private void OnDrawGizmos()

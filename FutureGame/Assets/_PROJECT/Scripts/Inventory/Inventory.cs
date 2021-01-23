@@ -82,11 +82,8 @@ public class Inventory : MonoBehaviour
         }
 
         freeSlot.AddItemToSlot(ItemDictionary.Instance.GetItemByID(id));
-    }
+        CharacterOwner.Instance.CharacterStats.CurrentWeight += ItemDictionary.Instance.GetItemByID(id).Weight;
 
-    public void RemoveItemFromSlot(InventorySlot slot)
-    {
-        slot.RemoveItem();
     }
 
     private void AddToEquipmentSlot(int slotIndex, Item item)
@@ -99,7 +96,10 @@ public class Inventory : MonoBehaviour
         if (item is Equipment)
         {
             var equipment = item as Equipment;
-            GameObject itemObject = Instantiate(equipment.EquipmentObject, handTransform.position, Quaternion.Euler(0, handTransform.eulerAngles.y + equipment.EquipmentObject.transform.eulerAngles.y, 0), handTransform);
+            GameObject itemObject = Instantiate(equipment.EquipmentObject, handTransform.position, Quaternion.Euler(handTransform.eulerAngles.x + equipment.EquipmentObject.transform.eulerAngles.x
+                , handTransform.eulerAngles.y + equipment.EquipmentObject.transform.eulerAngles.y
+                , handTransform.eulerAngles.z + equipment.EquipmentObject.transform.eulerAngles.z)
+                , handTransform);
             itemObject.name = equipment.ItemName;
             equipmentSlots[slotIndex].SetItemGameObject(itemObject);
             if (equipment is Weapon)
@@ -179,8 +179,15 @@ public class Inventory : MonoBehaviour
             {
                 slots[i].RemoveItem();
                 _itemsInInventory[id].RemoveItem();
+                CharacterOwner.Instance.CharacterStats.CurrentWeight -= ItemDictionary.Instance.GetItemByID(id).Weight;
             }
         }
+    }
+
+    public void RemoveItemFromSlot(InventorySlot slot)
+    {
+        slot.RemoveItem();
+        CharacterOwner.Instance.CharacterStats.CurrentWeight -= ItemDictionary.Instance.GetItemByID(slot.ItemID).Weight;
     }
 
     #region InventoryDictionary
@@ -205,6 +212,20 @@ public class Inventory : MonoBehaviour
     public ItemAmountInInventory GetItemFromDictionary(int key)
     {
         return _itemsInInventory[key];
+    }
+
+    public void ReduceOrRemoveItemFromDictionary(int itemID)
+    {
+        if (_charOwner.Inventory.GetAmountOfItemsInDictionary(itemID) > 1)
+        {
+            _charOwner.Inventory.RemoveItemFromDictionaryWithKey(itemID);
+            Debug.Log($"{_charOwner.Inventory.GetItemFromDictionary(itemID).ToString()} has been reduced by 1");
+        }
+        else
+        {
+            Debug.Log($"{_charOwner.Inventory.GetItemFromDictionary(itemID).ToString()} has been removed completely!");
+            _charOwner.Inventory.RemoveItemCompletelyFromDictionary(itemID);
+        }
     }
 
     #endregion

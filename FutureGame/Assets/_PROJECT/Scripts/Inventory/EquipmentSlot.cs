@@ -36,7 +36,7 @@ public class EquipmentSlot : MonoBehaviour, IPointerClickHandler
     {
         if (isEmpty)
         {
-            _image.sprite = null;
+            _image.sprite = _slotDefaultSprite;
         }
         else
         {
@@ -75,6 +75,9 @@ public class EquipmentSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        currentItem.Use(null);
+        CharacterOwner.Instance.Inventory.Dequip(currentItem);
+        currentItem = null;
+        CheckEmptyState();
+        RefreshSlotImage();
     }
 }

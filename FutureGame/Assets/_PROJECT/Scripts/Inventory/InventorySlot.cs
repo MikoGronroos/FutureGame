@@ -17,6 +17,7 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     private Sprite _icon;
     private TextMeshProUGUI _stackSizeText;
     private CharacterOwner _charOwner;
+    private ItemInfoPanelManager _itemInfoPanelManager;
 
     public bool IsEmpty { get { return isEmpty; } private set { } }
     public int StackSize { get { return stackSize; } set { stackSize = value; } }
@@ -32,8 +33,9 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
 
     private void Awake()
     {
-        _stackSizeText = GetComponentInChildren<TextMeshProUGUI>();
         _charOwner = FindObjectOfType<CharacterOwner>();
+        _stackSizeText = GetComponentInChildren<TextMeshProUGUI>();
+        _itemInfoPanelManager = FindObjectOfType<ItemInfoPanelManager>();
     }
 
     private void Start()
@@ -110,18 +112,20 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            Debug.Log("Right click");
+            Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            position.z = 0;
+            Debug.Log(position);
+            _itemInfoPanelManager.PressedInventorySlot(this, position, true);
+            return;
+        }
+
         if (!isEmpty)
         {
             Debug.Log($"You clicked on {item}");
-            if (_charOwner.Inventory.GetAmountOfItemsInDictionary(itemID) > 1)
-            {
-                _charOwner.Inventory.RemoveItemFromDictionaryWithKey(itemID);
-                Debug.Log($"{_charOwner.Inventory.GetItemFromDictionary(itemID).ToString()}");
-            }
-            else
-            {
-                _charOwner.Inventory.RemoveItemCompletelyFromDictionary(itemID);
-            }
             item.Use(this);
             CheckEmptyState();
             RefreshSlotImage();

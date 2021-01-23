@@ -20,6 +20,7 @@ public class CharacterMovement : MonoBehaviour, IMovement
 
     private CharacterOwner _charOwner;
     private CharacterController _controller;
+    private Rigidbody _rigidbody;
 
     //Input
     private float _horizontalInput;
@@ -31,6 +32,7 @@ public class CharacterMovement : MonoBehaviour, IMovement
     {
         _charOwner = GetComponent<CharacterOwner>();
         _controller = GetComponent<CharacterController>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -38,7 +40,7 @@ public class CharacterMovement : MonoBehaviour, IMovement
         HandleInput();
         if (running)
         {
-            _charOwner.CharacterStats.ReduceStamina(runningStaminaReduce * Time.deltaTime);
+            _charOwner.CharacterStats.CurrentStamina -= runningStaminaReduce * Time.deltaTime;
             currentSpeed = runningSpeed;
         }
         else
@@ -66,7 +68,7 @@ public class CharacterMovement : MonoBehaviour, IMovement
             if (_hasJumped)
             {
                 moveDirection.y = jumpForce;
-                _charOwner.CharacterStats.ReduceStamina(jumpingStaminaReduce);
+                _charOwner.CharacterStats.CurrentStamina -= jumpingStaminaReduce;
             }
         }
         moveDirection.y -= gravity * Time.deltaTime;

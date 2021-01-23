@@ -12,6 +12,7 @@ public class BuildSelection : MonoBehaviour, IPointerClickHandler
         buildingPlan.ChangeInspectObject(building.InspectElement);
         buildingPlan.SetRealObject(building.RealElement);
         buildingPlan.SetHasObject(true);
+        buildingPlan.SetNeededItems(building.NeededItems);
     }
 
     public void SetBuilding(Building building)

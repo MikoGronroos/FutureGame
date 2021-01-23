@@ -10,6 +10,8 @@ public class BuildingManager : MonoBehaviour
 
     [SerializeField] private GameObject BuildingSlot;
 
+    [SerializeField] private GameObject neededItemSlot;
+
     [SerializeField] private Transform slotParent;
 
     private void Start()
@@ -21,6 +23,16 @@ public class BuildingManager : MonoBehaviour
             newSlot.GetComponent<BuildSelection>().SetBuilding(slot);
             newSlot.transform.GetChild(0).GetComponent<Image>().sprite = slot.BuildingIcon;
             newSlot.transform.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = slot.BuildingName;
+            Transform neededItemsPanel = newSlot.transform.Find("NeededItemsPanel");
+            for (int j = 0; j < slot.NeededItems.Length; j++)
+            {
+                Debug.Log($"{slot} is getting items");
+                GameObject neededItem = Instantiate(neededItemSlot, neededItemsPanel);
+                string text = $"{slot.NeededItems[j].y}x";
+                neededItem.GetComponent<Image>().sprite = ItemDictionary.Instance.GetItemByID((int)slot.NeededItems[j].x).Icon;
+                Debug.Log((int)slot.NeededItems[j].x);
+                neededItem.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = text;
+            }
         }
     }
 }

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: WaterBottle
   m_EditorClassIdentifier: 
   ItemName: Water Bottle
-  ItemID: 16
+  ItemID: 14
   StackSize: 20
   Icon: {fileID: 21300000, guid: e0633c09230869443a2bd75a4a23721f, type: 3}
-  type: 1
+  Type: 0
   healthAddon: 5
   staminaAddon: 3
   hungerAddon: 0

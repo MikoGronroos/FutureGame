@@ -11,10 +11,10 @@ public class Consumable : Item
 
     public override void Use(InventorySlot slot)
     {
-        CharacterOwner.Instance.CharacterStats.AddHealth(healthAddon);
-        CharacterOwner.Instance.CharacterStats.AddStamina(staminaAddon);
-        CharacterOwner.Instance.CharacterStats.AddHunger(hungerAddon);
-        CharacterOwner.Instance.CharacterStats.AddThirst(thirstAddon);
+        CharacterOwner.Instance.CharacterStats.CurrentHealth += healthAddon;
+        CharacterOwner.Instance.CharacterStats.CurrentStamina += staminaAddon;
+        CharacterOwner.Instance.CharacterStats.CurrentHunger += hungerAddon;
+        CharacterOwner.Instance.CharacterStats.CurrentThirst += thirstAddon;
         base.Use(slot);
     }
 }

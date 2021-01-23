@@ -17,3 +17,5 @@ MonoBehaviour:
   BuildingIcon: {fileID: 21300000, guid: 27412e4e185ef0a4c96e1805af0f9ebb, type: 3}
   InspectElement: {fileID: 4700465261720191754, guid: f12dedbf9b1b8a844b163426f345da48, type: 3}
   RealElement: {fileID: 4700465261720191754, guid: d13fc5427ceb54941b227b5afd5084bb, type: 3}
+  NeededItems:
+  - {x: 1, y: 6}

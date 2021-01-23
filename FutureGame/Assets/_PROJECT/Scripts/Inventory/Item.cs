@@ -7,8 +7,9 @@ public class Item : ScriptableObject
     public string ItemName;
     public int ItemID;
     public int StackSize;
+    public float Weight;
     public Sprite Icon;
-    public ItemType type;
+    public ItemType Type;
 
     public virtual void Use(InventorySlot slot)
     {

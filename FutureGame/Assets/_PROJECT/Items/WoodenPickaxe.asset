@@ -15,8 +15,9 @@ MonoBehaviour:
   ItemName: Wooden Pickaxe
   ItemID: 10
   StackSize: 1
+  Weight: 2.7
   Icon: {fileID: 21300000, guid: 67efa1d71be6da541a12e34f3bdd784f, type: 3}
-  type: 0
+  Type: 0
   EquipmentObject: {fileID: 4777361814897887658, guid: 6f49e425c6a2c4647a0c920fff47e8a1, type: 3}
   EquipmentType: 4
   isEquipped: 0

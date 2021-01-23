@@ -15,9 +15,13 @@ MonoBehaviour:
   ItemName: Flashlight
   ItemID: 5
   StackSize: 1
+  Weight: 0.439
   Icon: {fileID: 21300000, guid: 4008ce2a4274c0a4b8431aa42a8be2b8, type: 3}
-  type: 0
+  Type: 0
   EquipmentObject: {fileID: 7474336121093094074, guid: ff1723371f83ee44087097510e529662, type: 3}
   EquipmentType: 4
+  isEquipped: 0
   WeaponType: 3
   damage: 3
+  range: 0
+  speed: 0

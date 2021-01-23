@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Slider staminaBar;
     [SerializeField] private Slider hungerBar;
     [SerializeField] private Slider thirstBar;
+
+    [SerializeField] private TextMeshProUGUI weightCounter;
 
     [SerializeField] private Button inventoryButton;
     [SerializeField] private Button craftingButton;
@@ -77,6 +80,12 @@ public class PlayerUI : MonoBehaviour
     public void UpdateThirstBar(float currentThirst, float maxThirst)
     {
         thirstBar.value = currentThirst / maxThirst;
+    }
+
+    public void UpdateWeightCounter(float currentWeight, float maxWeight)
+    {
+        string text = $"{currentWeight}kg/{maxWeight}kg";
+        weightCounter.text = text;
     }
 
     private void SleepEvent(string name, string message)

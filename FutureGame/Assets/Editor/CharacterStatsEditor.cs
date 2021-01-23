@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterStatsEditor : Editor
 {
 
-    private float _removalAmount;
+    private float AmountToAdd;
 
     public override void OnInspectorGUI()
     {
@@ -13,18 +13,18 @@ public class CharacterStatsEditor : Editor
 
         DrawDefaultInspector();
 
-        GUILayout.Label("Stat Removal");
+        GUILayout.Label("Stat Changer");
 
-        _removalAmount = EditorGUILayout.FloatField("Amount To Remove", _removalAmount);
+        AmountToAdd = EditorGUILayout.FloatField("Amount Of Change", AmountToAdd);
 
-        if (GUILayout.Button("Remove Health") && Application.isPlaying)
+        if (GUILayout.Button("Change Health") && Application.isPlaying)
         {
-            Debug.Log($"Removing {_removalAmount} health!");
-            if (CharacterOwner.Instance.CharacterStats.CurrentHealth - _removalAmount < 0)
+            Debug.Log($"Adding {AmountToAdd} health!");
+            if (CharacterOwner.Instance.CharacterStats.CurrentHealth - AmountToAdd < 0)
             {
-                _removalAmount = CharacterOwner.Instance.CharacterStats.CurrentHealth;
+                AmountToAdd = CharacterOwner.Instance.CharacterStats.CurrentHealth;
             }
-            CharacterOwner.Instance.CharacterStats.ReduceHealth(_removalAmount);
+            CharacterOwner.Instance.CharacterStats.CurrentHealth += AmountToAdd;
         }
     }
 }

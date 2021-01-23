@@ -6,4 +6,5 @@ public class MessageSender : MonoBehaviour
     {
         return MessageSystem.Instance.GetMessageFromDictionary(name).SendMessage();
     }
+
 }
