@@ -43,7 +43,7 @@ public class ItemInfoPanelManager : MonoBehaviour
     public void PressedInventorySlot(InventorySlot slot, Vector3 position, bool value)
     {
         _currentInventorySlot = slot;
-        _amountOfItems = _currentInventorySlot.AmountOfItems;
+        RefreshAmountOfItems(_currentInventorySlot.AmountOfItems);
         SetPosition(position);
         SetObjectActive(value);
 
@@ -61,12 +61,17 @@ public class ItemInfoPanelManager : MonoBehaviour
         }
     }
 
-    public void SetObjectActive(bool value)
+    private void SetObjectActive(bool value)
     {
         InfoPanel.SetActive(value);
     }
 
-    public void SetPosition(Vector3 position)
+    private void RefreshAmountOfItems(int value)
+    {
+        _amountOfItems = value;
+    }
+
+    private void SetPosition(Vector3 position)
     {
         InfoPanel.transform.localPosition = position;
     }
@@ -74,6 +79,7 @@ public class ItemInfoPanelManager : MonoBehaviour
     private void DiscardSingleItem()
     {
         _inventory.RemoveItemFromSlot(_currentInventorySlot);
+        RefreshAmountOfItems(_currentInventorySlot.AmountOfItems);
     }
 
     private void DiscardAllItems()
@@ -82,6 +88,7 @@ public class ItemInfoPanelManager : MonoBehaviour
         {
             _inventory.RemoveItemFromSlot(_currentInventorySlot);
         }
+        RefreshAmountOfItems(_currentInventorySlot.AmountOfItems);
     }
 
 }
