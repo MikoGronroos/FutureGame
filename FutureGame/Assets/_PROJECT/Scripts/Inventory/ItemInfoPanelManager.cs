@@ -79,6 +79,7 @@ public class ItemInfoPanelManager : MonoBehaviour
     private void DiscardSingleItem()
     {
         _inventory.RemoveItemFromSlot(_currentInventorySlot);
+        _inventory.RemoveItemFromDictionaryWithKey(_currentInventorySlot.ItemID);
         RefreshAmountOfItems(_currentInventorySlot.AmountOfItems);
     }
 

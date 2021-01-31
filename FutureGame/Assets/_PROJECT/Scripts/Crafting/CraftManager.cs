@@ -27,6 +27,9 @@ public class CraftManager : MonoBehaviour
         for (int i = 0; i < _recipies.CraftingRecipes.Count; i++)
         {
             CraftingRecipe craftingRecipe = _recipies.CraftingRecipes[i];
+
+            if (!craftingRecipe.IsDefaultRecipe) continue;
+
             Item item = ItemDictionary.Instance.GetItemByID(craftingRecipe.FinalItemId);
             GameObject slot = Instantiate(craftingRecipeSlot, slotParent);
             Transform recipeItemParent = slot.transform.Find("RecipeItemPanel");
@@ -44,39 +47,4 @@ public class CraftManager : MonoBehaviour
             }
         }
     }
-
-    //x is item id and y is amount of items
-    public Vector2[] GetAmountOfUniqueIds(int[] arrayOfIds)
-    {
-        List<int> uniqueIds = new List<int>();
-        for (int i = 0; i < arrayOfIds.Length; i++)
-        {
-            if (!uniqueIds.Contains(arrayOfIds[i]))
-            {
-                uniqueIds.Add(arrayOfIds[i]);
-            }
-        }
-
-        List<Vector2> returningList = new List<Vector2>();
-
-        for (int i = 0; i < uniqueIds.Count; i++)
-        {
-            returningList.Add(new Vector2(uniqueIds[i], 0));
-        }
-
-        for (int j = 0; j < arrayOfIds.Length; j++)
-        {
-            for (int k = 0; k < returningList.Count; k++)
-            {
-                if (arrayOfIds[j] == (int)returningList[k].x)
-                {
-                    int amount = (int)returningList[k].y + 1;
-                    Vector2 item = new Vector2(returningList[k].x, amount);
-                    returningList[k] = item;
-                }
-            }
-        }
-        return returningList.ToArray();
-    }
-
 }

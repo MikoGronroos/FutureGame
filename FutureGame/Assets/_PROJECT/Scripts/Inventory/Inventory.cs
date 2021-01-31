@@ -34,20 +34,6 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            AddItem(id);
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                AddItem(id);
-            }
-        }
-    }
 
     private bool IsFull()
     {
@@ -74,7 +60,6 @@ public class Inventory : MonoBehaviour
         {
             ItemAmountInInventory item = new ItemAmountInInventory(id);
             _itemsInInventory.Add(id, item);
-            Debug.Log($"{item.ToString()}");
         }
         else
         {
@@ -178,7 +163,7 @@ public class Inventory : MonoBehaviour
             if (slots[i].ItemID == id)
             {
                 slots[i].RemoveItem();
-                _itemsInInventory[id].RemoveItem();
+                RemoveItemFromDictionaryWithKey(id);
                 CharacterOwner.Instance.CharacterStats.CurrentWeight -= ItemDictionary.Instance.GetItemByID(id).Weight;
             }
         }
