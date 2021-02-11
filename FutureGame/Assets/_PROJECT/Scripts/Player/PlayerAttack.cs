@@ -12,7 +12,6 @@ public class PlayerAttack : MonoBehaviour, IAttack
 
     [SerializeField] private LayerMask ignoreMask;
 
-    [SerializeField] private EquipmentSlot handSlot;
     [SerializeField] private float damageReduceMultiplier = 0.135f;
 
     private CharacterOwner _charOwner;
@@ -90,22 +89,6 @@ public class PlayerAttack : MonoBehaviour, IAttack
             Debug.Log(hittedObj);
             if (hittedObj != null)
             {
-                if (hittedObj.WeaponType == WeaponType.None)
-                {
-                    hittedObj.MakeDamage(damage);
-                }
-                var handType = handSlot.GetCurrentItem() as Weapon;
-
-                if (handType == null) return;
-
-                if (hittedObj.WeaponType == handType.WeaponType)
-                {
-                    hittedObj.MakeDamage(damage);
-                }
-                else
-                {
-                    hittedObj.MakeDamage(damage * damageReduceMultiplier);
-                }
             }
         }
     }

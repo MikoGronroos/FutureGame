@@ -24,12 +24,12 @@ public class ItemDictionary : MonoBehaviour
 
         foreach (Item item in items)
         {
-            if (_allItems.ContainsKey(item.ItemID))
+            if (_allItems.ContainsKey(item.Id))
             {
                 Debug.Log("Dictionary Contains This Key Already");
                 continue;
             }
-            _allItems.Add(item.ItemID, item);
+            _allItems.Add(item.Id, item);
         }
         if (items.Length == _allItems.Count)
         {

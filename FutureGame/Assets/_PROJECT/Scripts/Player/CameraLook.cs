@@ -4,7 +4,6 @@ public class CameraLook : MonoBehaviour
 {
 
     [SerializeField] private float sensitivity;
-    [SerializeField] private Vector3 cameraOffset;
     [SerializeField] private Transform player;
     [SerializeField] private float turnSmoothTime;
 
@@ -22,24 +21,14 @@ public class CameraLook : MonoBehaviour
 
     private void Update()
     {
-        CameraPosition();
         CameraRotation();
-    }
-
-    private void LateUpdate()
-    {
         RotatePlayer();
-    }
-
-    private void CameraPosition()
-    {
-        transform.position = target.position + cameraOffset;
     }
 
     private void CameraRotation()
     {
-        float mouseX = Input.GetAxis("Mouse X") * sensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * sensitivity;
+        float mouseX = Input.GetAxisRaw("Mouse X") * sensitivity;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * sensitivity;
 
         yRotation += mouseX;
         xRotation -= mouseY;

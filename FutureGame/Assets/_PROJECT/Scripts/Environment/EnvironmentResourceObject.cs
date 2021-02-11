@@ -5,7 +5,6 @@ public class EnvironmentResourceObject : MonoBehaviour
 {
 
     [SerializeField] private float health;
-    [SerializeField] private LootTable lootTable;
 
     [SerializeField] private WeaponType weaponTypeAllowedToMakeDamage;
 
@@ -22,11 +21,6 @@ public class EnvironmentResourceObject : MonoBehaviour
 
     private void CollectObject()
     {
-        var loot = lootTable.GetLoot();
-        for (int i = 0; i < loot.Length; i++)
-        {
-            CharacterOwner.Instance.Inventory.AddItem(loot[i]);
-        }
         Destroy(gameObject);
     }
 

@@ -223,6 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   building: {fileID: 0}
+  ItemIcon: {fileID: 7146314670133256436}
 --- !u!1 &7146314670133256438
 GameObject:
   m_ObjectHideFlags: 0

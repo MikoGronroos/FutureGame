@@ -99,7 +99,7 @@ public class CharacterStats : MonoBehaviour, IDamageable
 
     private void Awake()
     {
-        _charOwner = CharacterOwner.Instance;
+        _charOwner = GetComponent<CharacterOwner>();
         currentHealth = maxHealth;
         currentStamina = maxStamina;
         currentThirst = maxThirst;

@@ -1,18 +1,13 @@
 ﻿using UnityEngine;
 
-public class ItemOnGround : MonoBehaviour
+public class ItemOnGround : MonoBehaviour, IInteractable
 {
 
-    [SerializeField] private int itemID;
+    [SerializeField] private Item itemData;
 
-    public int GetID()
+    public void Interact()
     {
-        return itemID;
+        Inventory.Instance.AddItemToInventory(itemData);
+        Destroy(gameObject);
     }
-
-    public void SetID(int id)
-    {
-        itemID = id;
-    }
-
 }

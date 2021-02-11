@@ -1,135 +1,41 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using TMPro;
 
-public class InventorySlot : MonoBehaviour, IPointerClickHandler
+public class InventorySlot : Slot, IDropHandler, IBeginDragHandler, IDragHandler
 {
 
-    [SerializeField] private bool isEmpty;
-    [SerializeField] private int itemID;
-    [SerializeField] private int stackSize;
-    [SerializeField] private int amountOfItems;
+    public override bool IsSlotEmpty => base.IsSlotEmpty;
 
-    [SerializeField] private Item item;
+    public override bool IsSlotFull => base.IsSlotFull;
 
-    private Image _image;
-    private Sprite _icon;
-    private TextMeshProUGUI _stackSizeText;
-    private CharacterOwner _charOwner;
-    private ItemInfoPanelManager _itemInfoPanelManager;
-
-    public bool IsEmpty { get { return isEmpty; } private set { } }
-    public int StackSize { get { return stackSize; } set { stackSize = value; } }
-    public int ItemID { get { return itemID; } set { itemID = value; } }
-    public int AmountOfItems { get { return amountOfItems; } private set { } }
-
-    private void OnValidate()
+    public override void OnBeginDrag(PointerEventData eventData)
     {
-        _stackSizeText = GetComponentInChildren<TextMeshProUGUI>();
-        RefreshStackSizeText();
-        CheckEmptyState();
+        base.OnBeginDrag(eventData);
     }
 
-    private void Awake()
+    public override void OnDrag(PointerEventData eventData)
     {
-        _charOwner = FindObjectOfType<CharacterOwner>();
-        _stackSizeText = GetComponentInChildren<TextMeshProUGUI>();
-        _itemInfoPanelManager = FindObjectOfType<ItemInfoPanelManager>();
+        base.OnDrag(eventData);
     }
 
-    private void Start()
+    public override void OnDrop(PointerEventData eventData)
     {
-        RefreshStackSizeText();
-        CheckEmptyState();
+        base.OnDrop(eventData);
     }
 
-    private void RefreshStackSizeText()
+    public override void RefreshItem(Item item)
     {
-        _stackSizeText.text = amountOfItems.ToString();
+        base.RefreshItem(item);
     }
 
-    private void CheckEmptyState()
+    public override void DeleteInventoryObject(GameObject itemCarrier)
     {
-        if (amountOfItems <= 0)
-        {
-            isEmpty = true;
-        }
-        else
-        {
-            isEmpty = false;
-        }
+        base.DeleteInventoryObject(itemCarrier);
     }
 
-    public void RefreshSlotImage()
+    public override Item GetCurrentItem()
     {
-        if (isEmpty)
-        {
-            _image.sprite = null;
-        }
-        else
-        {
-            _image.sprite = _icon;
-        }
+        return base.GetCurrentItem();
     }
 
-    public void AddItemToSlot(Item item)
-    {
-        if (isEmpty)
-        {
-            if (!_image) _image = GetComponent<Image>();
-
-            _icon = item.Icon;
-            stackSize = item.StackSize;
-            itemID = item.ItemID;
-            isEmpty = false;
-            this.item = item;
-            amountOfItems++;
-            RefreshSlotImage();
-        }
-        else
-        {
-            amountOfItems++;
-        }
-        RefreshStackSizeText();
-    }
-
-    public void RemoveItem()
-    {
-        if (amountOfItems > 1)
-        {
-            amountOfItems--;
-        }
-        else
-        {
-            item = null;
-            amountOfItems--;
-        }
-        CheckEmptyState();
-        RefreshSlotImage();
-        RefreshStackSizeText();
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            Debug.Log("Right click");
-            Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            position.z = 0;
-            Debug.Log(position);
-            _itemInfoPanelManager.PressedInventorySlot(this, position, true);
-            return;
-        }
-
-        if (!isEmpty)
-        {
-            Debug.Log($"You clicked on {item}");
-            item.Use(this);
-            CheckEmptyState();
-            RefreshSlotImage();
-            RefreshStackSizeText();
-        }
-    }
 }

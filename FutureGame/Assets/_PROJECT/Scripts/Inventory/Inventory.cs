@@ -1,141 +1,118 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
 
-    [SerializeField] private int id;
-
-    [SerializeField] private Transform handTransform;
     [SerializeField] private Transform inventoryParent;
-    [SerializeField] private Transform equipmentParent;
-    [SerializeField] private InventorySlot[] slots;
-    [SerializeField] private EquipmentSlot[] equipmentSlots;
+    [SerializeField] private List<InventorySlot> slots;
 
-    private CharacterOwner _charOwner;
+    [SerializeField] private ItemContainer container;
 
-    private Dictionary<int, ItemAmountInInventory> _itemsInInventory = new Dictionary<int, ItemAmountInInventory>();
+    private CameraLook _playerCameraLook;
+    private CharacterMovement _characterMovement;
+
+    private bool _inventoryIsOpen;
+
+    private List<StoredItem> _inventoryItems = new List<StoredItem>();
+
+    #region Singleton
+
+    private static Inventory _instance;
+
+    public static Inventory Instance { get { return _instance; } }
+
+    #endregion
+
+    private void OnDisable()
+    {
+        MessageReceiver.UnsubscribeToMessage("InventoryToggle", OnInventoryToggle);
+    }
+
+    #region Awake, Start and Update
 
     private void Awake()
     {
-        _charOwner = GetComponent<CharacterOwner>();
+        if (_instance == null || _instance != this)
+        {
+            _instance = this;
+        }
+
+        _playerCameraLook = FindObjectOfType<CameraLook>();
+        _characterMovement = FindObjectOfType<CharacterMovement>();
+
     }
 
-
-    private void OnValidate()
+    private void Start()
     {
-        if (inventoryParent != null)
+        MessageReceiver.SubscrideToMessage("InventoryToggle", OnInventoryToggle);
+        for (int i = 0; i < container.GetContainerSize(); i++)
         {
-            slots = inventoryParent.GetComponentsInChildren<InventorySlot>();
-        }
-        if (equipmentParent != null)
-        {
-            equipmentSlots = equipmentParent.GetComponentsInChildren<EquipmentSlot>();
+            GameObject slot = Instantiate(container.GetSlotGameObject(), Vector3.zero, Quaternion.identity, inventoryParent);
+            slots.Add(slot.GetComponent<InventorySlot>());
         }
     }
 
-
-    private bool IsFull()
+    private void Update()
     {
-        for (int i = 0; i < slots.Length; i++)
+        if (Input.GetKeyDown(KeyCode.X))
         {
-            if (slots[i].IsEmpty)
-            {
-                return false;
-            }else if (slots[i].AmountOfItems < slots[i].StackSize)
-            {
-                return false;
-            }
+            AddItemToInventory(ItemDictionary.Instance.GetItemByID(1));
         }
-        return true;
     }
 
-    public void AddItem(int id)
+    #endregion
+
+    private void OnInventoryToggle(string arg1, string arg2)
     {
-        if (IsFull()) return;
 
-        var freeSlot = GetSlot(id);
-
-        if (!_itemsInInventory.ContainsKey(id))
+        if (_inventoryIsOpen)
         {
-            ItemAmountInInventory item = new ItemAmountInInventory(id);
-            _itemsInInventory.Add(id, item);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            _playerCameraLook.enabled = true;
+            _characterMovement.enabled = true;
+            _inventoryIsOpen = false;
         }
         else
         {
-            _itemsInInventory[id].AddItem();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            _playerCameraLook.enabled = false;
+            _characterMovement.enabled = false;
+            _inventoryIsOpen = true;
         }
-
-        freeSlot.AddItemToSlot(ItemDictionary.Instance.GetItemByID(id));
-        CharacterOwner.Instance.CharacterStats.CurrentWeight += ItemDictionary.Instance.GetItemByID(id).Weight;
 
     }
 
-    private void AddToEquipmentSlot(int slotIndex, Item item)
+    #region Inventory Slot Manipulation
+
+    private InventorySlot GetValidSlotForItem(Item item)
     {
-        if (equipmentSlots[slotIndex].GetCurrentItem() != null)
+        if (item.IsStackable)
         {
-            Dequip(item);
-        }
-        equipmentSlots[slotIndex].SetCurrentItem(item);
-        if (item is Equipment)
-        {
-            var equipment = item as Equipment;
-            GameObject itemObject = Instantiate(equipment.EquipmentObject, handTransform.position, Quaternion.Euler(handTransform.eulerAngles.x + equipment.EquipmentObject.transform.eulerAngles.x
-                , handTransform.eulerAngles.y + equipment.EquipmentObject.transform.eulerAngles.y
-                , handTransform.eulerAngles.z + equipment.EquipmentObject.transform.eulerAngles.z)
-                , handTransform);
-            itemObject.name = equipment.ItemName;
-            equipmentSlots[slotIndex].SetItemGameObject(itemObject);
-            if (equipment is Weapon)
+            for (int i = 0; i < slots.Count; i++)
             {
-                var weapon = equipment as Weapon;
-                _charOwner.PlayerAttack.ChangeStats(weapon.damage, weapon.range, weapon.speed);
+
+                if (slots[i].GetCurrentItem() is null)
+                {
+                    continue;
+                }
+
+                if (slots[i].GetCurrentItem().Id == item.Id && !slots[i].IsSlotFull)
+                {
+                    return slots[i];
+                }
             }
         }
+        return null;
     }
 
-    public void Equip(Item item)
+    private InventorySlot GetEmptySlot()
     {
-        Debug.Log("Using item");
-        AddToEquipmentSlot(FindEquipmentSlotWithTag(item), item);
-    }
-
-    public void Dequip(Item item)
-    {
-
-        var slot = equipmentSlots[FindEquipmentSlotWithTag(item)];
-
-        if (slot.GetCurrentObject())
+        for (int i = 0; i < slots.Count; i++)
         {
-            Destroy(slot.GetCurrentObject());
-        }
-        AddItem(slot.GetCurrentItem().ItemID);
-    }
-
-    public int FindEquipmentSlotWithTag(Item item)
-    {
-        var equipment = item as Equipment;
-        for (int i = 0; i < equipmentSlots.Length; i++)
-        {
-            if (equipment.EquipmentType == equipmentSlots[i].GetEquipmentType())
-            {
-                return i;
-            }
-        }
-        return 0;
-    }
-
-    private InventorySlot GetSlot(int id)
-    {
-        int i = 0;
-        for (; i < slots.Length; i++)
-        {
-            if (slots[i].AmountOfItems < slots[i].StackSize && slots[i].ItemID == id)
-            {
-                return slots[i];
-            }
-            else if (slots[i].IsEmpty)
+            if (slots[i].IsSlotEmpty)
             {
                 return slots[i];
             }
@@ -143,109 +120,87 @@ public class Inventory : MonoBehaviour
         return null;
     }
 
-    public InventorySlot GetSlotWithItem(int id)
+    #endregion
+
+    //Call this when picking up item from ground. Searches for first empty slot and instantiates item there.
+    public StoredItem InventoryStorageHasItem(Item item)
     {
-        int i = 0;
-        for (; i < slots.Length; i++)
+        for (int i = 0; i < _inventoryItems.Count; i++)
         {
-            if (slots[i].ItemID == id)
+            if (_inventoryItems[i].ThisItem == item)
             {
-                return slots[i];
+                return _inventoryItems[i];
             }
         }
         return null;
     }
 
-    public void RemoveItemFromInventoryWithId(int id)
+    public void AddItemToInventory(Item item)
     {
-        for (int i = 0; i < slots.Length; i++)
+        bool itemIsForEmptySlot = false;
+        InventorySlot slot = GetValidSlotForItem(item);
+
+        if (InventoryStorageHasItem(item) == null)
         {
-            if (slots[i].ItemID == id)
-            {
-                slots[i].RemoveItem();
-                RemoveItemFromDictionaryWithKey(id);
-                CharacterOwner.Instance.CharacterStats.CurrentWeight -= ItemDictionary.Instance.GetItemByID(id).Weight;
-            }
-        }
-    }
-
-    public void RemoveItemFromSlot(InventorySlot slot)
-    {
-        slot.RemoveItem();
-        CharacterOwner.Instance.CharacterStats.CurrentWeight -= ItemDictionary.Instance.GetItemByID(slot.ItemID).Weight;
-    }
-
-    #region InventoryDictionary
-
-    public void RemoveItemFromDictionaryWithKey(int key)
-    {
-        _itemsInInventory[key].RemoveItem();
-    }
-
-    public int GetAmountOfItemsInDictionary(int key)
-    {
-        if (!_itemsInInventory.ContainsKey(key)) return 0;
-
-        return _itemsInInventory[key].GetAmountOfItems();
-    }
-
-    public void RemoveItemCompletelyFromDictionary(int key)
-    {
-        _itemsInInventory.Remove(key);
-    }
-
-    public ItemAmountInInventory GetItemFromDictionary(int key)
-    {
-        return _itemsInInventory[key];
-    }
-
-    public void ReduceOrRemoveItemFromDictionary(int itemID)
-    {
-        if (_charOwner.Inventory.GetAmountOfItemsInDictionary(itemID) > 1)
-        {
-            _charOwner.Inventory.RemoveItemFromDictionaryWithKey(itemID);
-            Debug.Log($"{_charOwner.Inventory.GetItemFromDictionary(itemID).ToString()} has been reduced by 1");
+            StoredItem storedItem = new StoredItem(item);
+            _inventoryItems.Add(storedItem);
         }
         else
         {
-            Debug.Log($"{_charOwner.Inventory.GetItemFromDictionary(itemID).ToString()} has been removed completely!");
-            _charOwner.Inventory.RemoveItemCompletelyFromDictionary(itemID);
+            InventoryStorageHasItem(item).CurrentAmount++;
         }
+
+        if (slot == null)
+        {
+            slot = GetEmptySlot();
+            itemIsForEmptySlot = true;
+            if (slot == null)
+            {
+                return;
+            }
+        }
+
+        if (itemIsForEmptySlot)
+        {
+            slot.RefreshItem(item);
+            slot.CurrentAmountOfItems++;
+        }
+        else
+        {
+            slot.CurrentAmountOfItems++;
+        }
+
+    }
+
+    #region Inventory Items List
+
+    public StoredItem GetStoredItem(Item item)
+    {
+        for (int i = 0; i < _inventoryItems.Count; i++)
+        {
+            if (_inventoryItems[i].ThisItem.Equals(item))
+            {
+                return _inventoryItems[i];
+            }
+        }
+        return null;
     }
 
     #endregion
 
 }
 
-public class ItemAmountInInventory
+public class StoredItem
 {
-    int _itemId;
-    int _amountOfItems = 0;
+    public Item ThisItem;
 
-    public ItemAmountInInventory(int id)
-    {
-        _itemId = id;
-        AddItem();
-    }
+    //Amount of one item in inventory
+    public int CurrentAmount;
 
-    public void AddItem()
+    public StoredItem(Item item)
     {
-        _amountOfItems++;
-    }
-
-    public void RemoveItem()
-    {
-        _amountOfItems--;
-    }
-
-    public int GetAmountOfItems()
-    {
-        return _amountOfItems;
-    }
-
-    public override string ToString()
-    {
-        return $"item id = {_itemId}, item amount = {_amountOfItems}";
+        ThisItem = item;
+        CurrentAmount = 1;
     }
 
 }

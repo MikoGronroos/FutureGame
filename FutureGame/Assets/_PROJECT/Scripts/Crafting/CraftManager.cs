@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
 
 public class CraftManager : MonoBehaviour
 {
@@ -31,6 +30,9 @@ public class CraftManager : MonoBehaviour
             if (!craftingRecipe.IsDefaultRecipe) continue;
 
             Item item = ItemDictionary.Instance.GetItemByID(craftingRecipe.FinalItemId);
+
+            if (item == null) continue;
+
             GameObject slot = Instantiate(craftingRecipeSlot, slotParent);
             Transform recipeItemParent = slot.transform.Find("RecipeItemPanel");
             CraftSlot craftSlot = slot.GetComponent<CraftSlot>();

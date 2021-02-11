@@ -28,7 +28,6 @@ public class WorldManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        Debug.Log(MessageSender.SendMessageToClients("GameStartEvent"));
         _spawnPoint = GetComponent<WorldSpawnPoint>();
         _dayNightCycle = GetComponent<DayNightCycle>();
         _worldClock = GetComponent<WorldClock>();

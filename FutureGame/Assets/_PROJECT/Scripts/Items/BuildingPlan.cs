@@ -68,15 +68,8 @@ public class BuildingPlan : MonoBehaviour
 
             if (_charOwner.Input.HitInput())
             {
-                if (InventoryMethods.CheckIfInventoryHasItems(_neededItems))
-                {
-                    InventoryMethods.RemoveItemsFromInventory(_neededItems);
-                    PlaceObject(_realObject, currentlyInspecting.transform.position);
-                }
-                else
-                {
-                    return;
-                }
+                PlaceObject(_realObject, currentlyInspecting.transform.position);
+                //Check for needed items in inventory
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CraftSlot : MonoBehaviour, IPointerClickHandler
@@ -12,15 +11,6 @@ public class CraftSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-
-        if (InventoryMethods.CheckIfInventoryHasItems(AmountOfUniqueIds))
-        {
-            InventoryMethods.RemoveItemsFromInventory(AmountOfUniqueIds);
-            CharacterOwner.Instance.Inventory.AddItem(_slotRecipe.FinalItemId);
-        }
-        else
-        {
-            return;
-        }
+        Inventory.Instance.AddItemToInventory(ItemDictionary.Instance.GetItemByID(_slotRecipe.FinalItemId));
     }
 }

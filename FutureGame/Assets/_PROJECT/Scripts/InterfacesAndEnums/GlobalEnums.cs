@@ -11,7 +11,7 @@ public enum EquipmentType
     Torso,
     Legs,
     Feet,
-    Weapon
+    HandHeld
 }
 
 public enum WeaponType

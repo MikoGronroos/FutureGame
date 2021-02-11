@@ -7,4 +7,10 @@ public class MessageReceiver : MonoBehaviour
     {
        MessageSystem.Instance.GetMessageFromDictionary(name).thisAction += method;
     }
+
+    public static void UnsubscribeToMessage(string name, Action<string, string> method)
+    {
+        MessageSystem.Instance.GetMessageFromDictionary(name).thisAction -= method;
+    }
+
 }

@@ -28,7 +28,7 @@ public class PlayerInput : MonoBehaviour, IInput
 
     public bool InteractInput()
     {
-        return Input.GetButtonDown("Interact");
+        return Input.GetKeyDown(Settings.Instance.InputSettings.interactInput);
     }
 
     public bool HitInput()

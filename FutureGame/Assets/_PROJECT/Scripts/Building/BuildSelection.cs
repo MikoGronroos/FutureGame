@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class BuildSelection : MonoBehaviour, IPointerClickHandler
 {
 
     [SerializeField] private Building building;
+
+    public Image ItemIcon;
 
     public void OnPointerClick(PointerEventData eventData)
     {
