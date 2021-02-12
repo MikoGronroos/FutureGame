@@ -3,9 +3,9 @@
 public class Settings : MonoBehaviour
 {
 
-    [SerializeField] private InputSettings inputSettings;
+    [SerializeField] private Controls inputSettings;
 
-    public InputSettings InputSettings { get { return inputSettings; } }
+    public Controls InputSettings { get { return inputSettings; } }
 
     #region Singleton
 

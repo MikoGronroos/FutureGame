@@ -43,9 +43,8 @@ public class SmallChest : MonoBehaviour, IInteractable
             if (containerData.GetContents()[i] == null) continue;
 
             chestSlotParent.GetChild(i).GetComponent<InventorySlot>().RefreshItem(containerData.GetContents()[i].ThisItem);
-
+            chestSlotParent.GetChild(i).GetComponent<InventorySlot>().CurrentAmountOfItems++;
         }
-
 
         yield return null;
 

@@ -21,6 +21,7 @@ public class EquippingItem : MonoBehaviour
 
         var equipmentItem = item as EquipmentItem;
 
+        Debug.Log("Instantiating item");
         GameObject currentWeapon = Instantiate(equipmentItem.ItemObject);
 
         switch (equipmentItem.ThisEquipmentType)
@@ -44,8 +45,16 @@ public class EquippingItem : MonoBehaviour
             case EquipmentType.HandHeld:
                 activeHandSlotObject = currentWeapon;
                 currentWeapon.transform.SetParent(handParent);
-                currentWeapon.transform.position = new Vector3(0, 0, 0);
-                currentWeapon.transform.rotation = Quaternion.identity;
+                currentWeapon.transform.position = handParent.position;
+                currentWeapon.transform.rotation = equipmentItem.ItemObject.transform.rotation;
+
+                /*
+                Quaternion.Euler(
+                 handParent.eulerAngles.x + equipmentItem.ItemObject.transform.eulerAngles.x
+                , handParent.eulerAngles.y + equipmentItem.ItemObject.transform.eulerAngles.y
+                , handParent.eulerAngles.z + equipmentItem.ItemObject.transform.eulerAngles.z);
+                */
+
                 break;
         }
 

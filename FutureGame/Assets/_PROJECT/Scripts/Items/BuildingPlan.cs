@@ -21,10 +21,6 @@ public class BuildingPlan : MonoBehaviour
 
     private int fingerID = -1;
 
-    #if !UNITY_EDITOR
-        fingerID = 0; 
-    #endif
-
     public bool CanBuild { get { return canBuild; } set { canBuild = value; } }
 
     private void OnEnable()

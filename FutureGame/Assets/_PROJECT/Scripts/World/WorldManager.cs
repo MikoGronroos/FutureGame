@@ -4,11 +4,11 @@ public class WorldManager : MonoBehaviour
 {
 
     private WorldSpawnPoint _spawnPoint;
-    private DayNightCycle _dayNightCycle;
+    private DayCycle _dayCycle;
     private WorldClock _worldClock;
 
     public WorldSpawnPoint SpawnPoint { get { return _spawnPoint; } }
-    public DayNightCycle DayNightCycle { get { return _dayNightCycle; } }
+    public DayCycle DayCycle { get { return _dayCycle; } }
     public WorldClock WorldClock { get { return _worldClock; } }
 
     #region Singleton
@@ -29,7 +29,7 @@ public class WorldManager : MonoBehaviour
     {
         _instance = this;
         _spawnPoint = GetComponent<WorldSpawnPoint>();
-        _dayNightCycle = GetComponent<DayNightCycle>();
+        _dayCycle = GetComponent<DayCycle>();
         _worldClock = GetComponent<WorldClock>();
     }
 

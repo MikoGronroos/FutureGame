@@ -27,8 +27,11 @@ public class Slot : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler
         {
             currentAmountOfItems = value;
 
-            string stackText = $"{currentAmountOfItems.ToString()}";
-            stackSizeText.text = stackText;
+            if (stackSizeText != null)
+            {
+                string stackText = $"{currentAmountOfItems.ToString()}";
+                stackSizeText.text = stackText;
+            }
 
             if (currentAmountOfItems <= 0)
             {
@@ -52,7 +55,6 @@ public class Slot : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler
 
         if (currentItem == null) { return; }
 
-        CurrentAmountOfItems--;
         GameObject itemInInventoryObject = Instantiate(inventoryItemObject);
         itemInInventoryObject.GetComponent<InventoryObject>().SetDragStartPos(transform.position);
         itemInInventoryObject.transform.position = transform.position;
@@ -61,10 +63,7 @@ public class Slot : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler
         itemInInventoryObject.transform.SetParent(parentObject.transform);
         eventData.pointerDrag = itemInInventoryObject;
 
-        if (CurrentAmountOfItems <= 0)
-        {
-            RefreshItem(null);
-        }
+        CurrentAmountOfItems--;
     }
 
     public virtual void OnDrag(PointerEventData eventData)

@@ -84,6 +84,7 @@ public class CharacterStats : MonoBehaviour, IDamageable
             {
                 currentHunger = 0;
             }
+            _charOwner.PlayerUI.UpdateHungerBar(currentHunger, maxHunger);
         }
     }
 
