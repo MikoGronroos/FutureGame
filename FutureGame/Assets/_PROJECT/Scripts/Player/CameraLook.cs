@@ -6,21 +6,22 @@ public class CameraLook : MonoBehaviour
     [SerializeField] private float sensitivity;
     [SerializeField] private Transform player;
     [SerializeField] private float turnSmoothTime;
+    [SerializeField] private Transform cameraParentTransform;
+    [SerializeField] private Vector3 headOffset;
 
-    private Transform target;
     private float xRotation = 0.0f;
     private float yRotation = 0.0f;
     private float _turnSmoothVelocity;
 
     private void Awake()
     {
-        target = FindObjectOfType<CharacterMovement>().transform;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     private void Update()
     {
+        transform.position = cameraParentTransform.position + headOffset;
         CameraRotation();
         RotatePlayer();
     }

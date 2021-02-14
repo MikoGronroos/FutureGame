@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BuildBlock
   - MainCanvas
+  - SmallChestUI
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - PlayerModel
   - Letter
   - CantBuild
-  - 
+  - AnimalOrHumanoid
   - 
   - 
   - 

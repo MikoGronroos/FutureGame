@@ -7,4 +7,5 @@ public class EquipmentItem : Item
 
     public EquipmentType ThisEquipmentType;
     public GameObject ItemObject;
+    public AnimatorOverrideController ThisAnimatorOverrideController;
 }

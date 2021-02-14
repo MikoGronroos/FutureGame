@@ -75,23 +75,31 @@ public class Slot : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler
         if (eventData.pointerDrag != null)
         {
 
-            if (!eventData.pointerDrag.GetComponent<InventoryObject>()) return;
-            var invObj = eventData.pointerDrag.GetComponent<InventoryObject>();
-
-            if (!IsEmpty())
+            if (eventData.pointerDrag.TryGetComponent(out InventoryObject invObject))
             {
-                if (invObj.ThisItem.Id != currentItem.Id || IsSlotFull) return;
-            }
 
-            eventData.pointerDrag.transform.position = transform.position;
+                if (!IsEmpty())
+                {
+                    if (invObject.ThisItem.Id != currentItem.Id || IsSlotFull) return;
+                }
 
-            if (IsEmpty())
-            {
-                RefreshItem(invObj.ThisItem);
+                eventData.pointerDrag.transform.position = transform.position;
+
+                if (IsEmpty())
+                {
+                    RefreshItem(invObject.ThisItem);
+                }
+
+                if (invObject.GetLastSlot() is EquipmentSlot)
+                {
+                    var equipmentSlot = invObject.GetLastSlot() as EquipmentSlot;
+                    equipmentSlot.DequippingItem(currentItem);
+                }
+
+                CurrentAmountOfItems++;
+                invObject.DroppedOnSlot = true;
+                DeleteInventoryObject(eventData.pointerDrag);
             }
-            CurrentAmountOfItems++;
-            invObj.DroppedOnSlot = true;
-            DeleteInventoryObject(eventData.pointerDrag);
         }
     }
 

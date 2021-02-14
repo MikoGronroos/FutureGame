@@ -37,6 +37,11 @@ public class EquipmentSlot : Slot, IDropHandler, IBeginDragHandler, IDragHandler
         _equippingItem.EquipItem(currentItem);
     }
 
+    public void DequippingItem(Item item)
+    {
+        _equippingItem.DequipItem(item);
+    }
+
     public override void RefreshItem(Item item)
     {
         base.RefreshItem(item);

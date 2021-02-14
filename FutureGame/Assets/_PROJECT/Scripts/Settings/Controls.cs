@@ -10,5 +10,6 @@ public class Controls : ScriptableObject
     public KeyCode WalkBackwardInput;
     public KeyCode StrafeLeftInput;
     public KeyCode StrafeRightInput;
+    public KeyCode CrouchInput;
 
 }

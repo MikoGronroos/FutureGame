@@ -7,16 +7,23 @@ public class SmallChest : MonoBehaviour, IInteractable
 {
 
     [SerializeField] private bool isOpen;
-    [SerializeField] private int amountOfSlots = 0;
-    [SerializeField] private GameObject smallChestUI;
     [SerializeField] private Transform chestSlotParent;
     [SerializeField] private Button closeChestButton;
 
+    [SerializeField] private ItemContainer itemContainer;
     [SerializeField] private ContainerData containerData;
+
+    private GameObject smallChestUI;
 
     private void Awake()
     {
-        containerData = new ContainerData(amountOfSlots);
+
+        smallChestUI = FindObjectOfType<SmallChestUI>().gameObject;
+
+        Debug.Log(smallChestUI.name);
+
+        itemContainer.InitContainer(smallChestUI);
+        containerData = new ContainerData(itemContainer.GetContainerSize());
         closeChestButton.onClick.AddListener(CloseChest);
     }
 
@@ -53,14 +60,12 @@ public class SmallChest : MonoBehaviour, IInteractable
 
     private void Callback()
     {
-        smallChestUI.SetActive(true);
-        isOpen = true;
+        isOpen = itemContainer.ToggleContainer(isOpen);
     }
 
     private void CloseChest()
     {
-        smallChestUI.SetActive(false);
-        isOpen = false;
+        isOpen = itemContainer.ToggleContainer(isOpen);
     }
 
 }
@@ -77,6 +82,12 @@ public class ContainerData
 
     public void AddItemToContents(Item item, int index)
     {
+
+        if (_contents.Length <= 0)
+        {
+            Debug.LogWarning($"Contents size is {_contents.Length}. Cant add items!");
+            return;
+        }
 
         if (_contents[index] != null)
         {

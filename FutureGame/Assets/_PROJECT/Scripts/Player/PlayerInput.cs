@@ -3,22 +3,29 @@
 public class PlayerInput : MonoBehaviour, IInput
 {
 
-    private CharacterOwner _charOwner;
-
-
-    private void Awake()
-    {
-        _charOwner = GetComponent<CharacterOwner>();
-    }
-
     public float HorizontalInput()
     {
-        return Input.GetAxisRaw("Horizontal");
+        if (Input.GetKey(Settings.Instance.InputSettings.StrafeLeftInput))
+        {
+            return -1;
+        }else if (Input.GetKey(Settings.Instance.InputSettings.StrafeRightInput))
+        {
+            return 1;
+        }
+        return 0;
     }
 
     public float VerticalInput()
     {
-        return Input.GetAxisRaw("Vertical");
+        if (Input.GetKey(Settings.Instance.InputSettings.WalkBackwardInput))
+        {
+            return -1;
+        }
+        else if (Input.GetKey(Settings.Instance.InputSettings.WalkForwardInput))
+        {
+            return 1;
+        }
+        return 0;
     }
 
     public bool RunInput()
@@ -50,4 +57,10 @@ public class PlayerInput : MonoBehaviour, IInput
     {
         return Input.GetButtonDown("Jump");
     }
+    
+    public bool CrouchInput()
+    {
+        return Input.GetKey(Settings.Instance.InputSettings.CrouchInput);
+    }
+
 }

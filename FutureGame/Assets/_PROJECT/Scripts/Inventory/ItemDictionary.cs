@@ -4,8 +4,6 @@ using UnityEngine;
 public class ItemDictionary : MonoBehaviour
 {
 
-    [SerializeField] private Item[] items;
-
     private Dictionary<int, Item> _allItems = new Dictionary<int, Item>();
 
     private static ItemDictionary _instance;
@@ -22,23 +20,19 @@ public class ItemDictionary : MonoBehaviour
     {
         _instance = this;
 
+        Item[] items = Resources.LoadAll<Item>("Items/");
+
         foreach (Item item in items)
         {
             if (_allItems.ContainsKey(item.Id))
             {
-                Debug.Log("Dictionary Contains This Key Already");
+                Debug.Log($"Dictionary Contains Key {item.Id} Already");
                 continue;
             }
             _allItems.Add(item.Id, item);
         }
-        if (items.Length == _allItems.Count)
-        {
-            Debug.Log("All Items Were Loaded");
-        }
-        else
-        {
-            Debug.LogWarning("Not All Items Were Loaded");
-        }
+
+        Debug.Log($"Item Dictionary contains {_allItems.Count} unique items!");
 
     }
 

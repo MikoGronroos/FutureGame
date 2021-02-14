@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sensitivity: 1
   InteractInput: 102
+  WalkForwardInput: 119
+  WalkBackwardInput: 115
+  StrafeLeftInput: 97
+  StrafeRightInput: 100
+  CrouchInput: 306

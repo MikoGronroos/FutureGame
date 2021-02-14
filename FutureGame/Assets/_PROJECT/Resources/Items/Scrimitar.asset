@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7445548f361aef34aa22ee2934b04c71, type: 3}
+  m_Name: Scrimitar
+  m_EditorClassIdentifier: 
+  Id: 10
+  ItemName: Scrimitar
+  Icon: {fileID: 21300000, guid: a98b6da3e349b9f4eb1aca763db7d283, type: 3}
+  Weight: 0
+  StackSize: 0
+  IsStackable: 0
+  ThisEquipmentType: 4
+  ItemObject: {fileID: 2622205424404358655, guid: 432cea74bb6256c4b92f7ade0ba19294, type: 3}
+  ThisAnimatorOverrideController: {fileID: 22100000, guid: 5144051811a1c2547adf43050d61accb, type: 2}

@@ -79,5 +79,10 @@ public class InventoryObject : MonoBehaviour, IEndDragHandler, IDragHandler
         _lastSlot = slot;
     }
 
+    public Slot GetLastSlot()
+    {
+        return _lastSlot;
+    }
+
 
 }

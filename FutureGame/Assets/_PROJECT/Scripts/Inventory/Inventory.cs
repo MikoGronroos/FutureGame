@@ -4,13 +4,12 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
 
+    [SerializeField] private GameObject _characterInfoPanel;
+
     [SerializeField] private Transform inventoryParent;
     [SerializeField] private List<InventorySlot> slots;
 
     [SerializeField] private ItemContainer container;
-
-    private CameraLook _playerCameraLook;
-    private CharacterMovement _characterMovement;
 
     private bool _inventoryIsOpen;
 
@@ -24,11 +23,6 @@ public class Inventory : MonoBehaviour
 
     #endregion
 
-    private void OnDisable()
-    {
-        MessageReceiver.UnsubscribeToMessage("InventoryToggle", OnInventoryToggle);
-    }
-
     #region Awake, Start and Update
 
     private void Awake()
@@ -38,14 +32,12 @@ public class Inventory : MonoBehaviour
             _instance = this;
         }
 
-        _playerCameraLook = FindObjectOfType<CameraLook>();
-        _characterMovement = FindObjectOfType<CharacterMovement>();
+        container.InitContainer(_characterInfoPanel);
 
     }
 
     private void Start()
     {
-        MessageReceiver.SubscrideToMessage("InventoryToggle", OnInventoryToggle);
         for (int i = 0; i < container.GetContainerSize(); i++)
         {
             GameObject slot = Instantiate(container.GetSlotGameObject(), Vector3.zero, Quaternion.identity, inventoryParent);
@@ -55,6 +47,19 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
+        if (CharacterOwner.Instance.Input.InventoryInput())
+        {
+            if (_inventoryIsOpen)
+            {
+                _inventoryIsOpen = container.ToggleContainer(_inventoryIsOpen);
+                MessageSender.SendMessageToClients("InventoryToggle");
+            }
+            else
+            {
+                _inventoryIsOpen = container.ToggleContainer(_inventoryIsOpen);
+                MessageSender.SendMessageToClients("InventoryToggle");
+            }
+        }
         if (Input.GetKeyDown(KeyCode.X))
         {
             AddItemToInventory(ItemDictionary.Instance.GetItemByID(1));
@@ -62,28 +67,6 @@ public class Inventory : MonoBehaviour
     }
 
     #endregion
-
-    private void OnInventoryToggle(string arg1, string arg2)
-    {
-
-        if (_inventoryIsOpen)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            _playerCameraLook.enabled = true;
-            _characterMovement.enabled = true;
-            _inventoryIsOpen = false;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            _playerCameraLook.enabled = false;
-            _characterMovement.enabled = false;
-            _inventoryIsOpen = true;
-        }
-
-    }
 
     #region Inventory Slot Manipulation
 

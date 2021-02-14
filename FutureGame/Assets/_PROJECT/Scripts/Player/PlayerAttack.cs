@@ -13,6 +13,7 @@ public class PlayerAttack : MonoBehaviour, IAttack
     [SerializeField] private LayerMask ignoreMask;
 
     [SerializeField] private float damageReduceMultiplier = 0.135f;
+    [SerializeField] private Animator animator;
 
     private CharacterOwner _charOwner;
     private Camera _camera;
@@ -62,6 +63,7 @@ public class PlayerAttack : MonoBehaviour, IAttack
 
         yield return new WaitForSeconds(speed);
 
+        animator.SetBool("isPunching", false);
         hasAttacked = false;
 
         yield return null;
@@ -80,15 +82,15 @@ public class PlayerAttack : MonoBehaviour, IAttack
         }
 
         Debug.Log("Attacked");
+        animator.SetBool("isPunching", true);
 
         Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         if (Physics.Raycast(ray,  out var hit, range, ~ignoreMask))
         {
 
-            var hittedObj = hit.transform.GetComponent<IDamageable>();
-            Debug.Log(hittedObj);
-            if (hittedObj != null)
+            if (hit.transform.TryGetComponent(out IDamageable hittedObject))
             {
+                hittedObject.MakeDamage(damage);
             }
         }
     }

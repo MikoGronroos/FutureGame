@@ -18,7 +18,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1255902327111303489
 Transform:
@@ -109,10 +109,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  lootTable:
-    table: 590000000b000000
-    ids: 090000000c000000
-    total: 0
-    randomNumber: 0
-    amountOfLoot: 6
   weaponTypeAllowedToMakeDamage: 2

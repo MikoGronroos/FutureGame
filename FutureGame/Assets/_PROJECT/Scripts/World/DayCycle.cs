@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.HighDefinition;
 
 public class DayCycle : MonoBehaviour
 {
@@ -11,20 +10,11 @@ public class DayCycle : MonoBehaviour
     [SerializeField] private float orbitSpeed = 1.0f;
     [SerializeField] private Light sun;
     [SerializeField] private Light moon;
-    [SerializeField] private Volume skyVolume;
-    [SerializeField] private AnimationCurve starsCurve;
 
     private bool isNight;
-    private PhysicallyBasedSky sky;
-
-    private void Start()
-    {
-        skyVolume.profile.TryGet(out sky);
-    }
 
     private void OnValidate()
     {
-        skyVolume.profile.TryGet(out sky);
         UpdateTime();
     }
 
@@ -45,10 +35,8 @@ public class DayCycle : MonoBehaviour
         float sunRotation = Mathf.Lerp(-90, 270, alpha);
         float moonRotation = sunRotation - 180;
 
-        sun.transform.rotation = Quaternion.Euler(sunRotation, -150.0f, 0);
-        moon.transform.rotation = Quaternion.Euler(moonRotation, -150.0f, 0);
-
-        sky.spaceEmissionMultiplier.value = starsCurve.Evaluate(alpha) * 1000.0f;
+        sun.transform.rotation = Quaternion.Euler(sunRotation, -50.0f, 0);
+        moon.transform.rotation = Quaternion.Euler(moonRotation, -50.0f, 0);
 
         CheckNightDayTransition();
     }
@@ -74,15 +62,11 @@ public class DayCycle : MonoBehaviour
     private void StartDay()
     {
         isNight = false;
-        sun.shadows = LightShadows.Soft;
-        moon.shadows = LightShadows.None;
     }
 
     private void StartNight()
     {
         isNight = true;
-        sun.shadows = LightShadows.None;
-        moon.shadows = LightShadows.Soft;
     }
 
 }

@@ -3,6 +3,9 @@
 public class EquippingItem : MonoBehaviour
 {
 
+    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private AnimatorOverrideController startingAnimatorOverride;
+
     [SerializeField] private Transform headParent;
     [SerializeField] private Transform torsoParent;
     [SerializeField] private Transform legsParent;
@@ -20,9 +23,7 @@ public class EquippingItem : MonoBehaviour
         if (item == null) return;
 
         var equipmentItem = item as EquipmentItem;
-
-        Debug.Log("Instantiating item");
-        GameObject currentWeapon = Instantiate(equipmentItem.ItemObject);
+        GameObject currentWeapon = null;
 
         switch (equipmentItem.ThisEquipmentType)
         {
@@ -43,18 +44,9 @@ public class EquippingItem : MonoBehaviour
                 currentWeapon.transform.SetParent(feetParent);
                 break;
             case EquipmentType.HandHeld:
+                currentWeapon = Instantiate(equipmentItem.ItemObject, handParent);
                 activeHandSlotObject = currentWeapon;
-                currentWeapon.transform.SetParent(handParent);
-                currentWeapon.transform.position = handParent.position;
-                currentWeapon.transform.rotation = equipmentItem.ItemObject.transform.rotation;
-
-                /*
-                Quaternion.Euler(
-                 handParent.eulerAngles.x + equipmentItem.ItemObject.transform.eulerAngles.x
-                , handParent.eulerAngles.y + equipmentItem.ItemObject.transform.eulerAngles.y
-                , handParent.eulerAngles.z + equipmentItem.ItemObject.transform.eulerAngles.z);
-                */
-
+                playerAnimator.runtimeAnimatorController = equipmentItem.ThisAnimatorOverrideController;
                 break;
         }
 
@@ -62,9 +54,16 @@ public class EquippingItem : MonoBehaviour
 
     }
 
-    public void DequipItem(EquipmentItem item)
+    public void DequipItem(Item item)
     {
-        switch (item.ThisEquipmentType)
+        Debug.Log($"Dequipping {item.ItemName}");
+        if (item == null) return;
+
+        var equipmentItem = item as EquipmentItem;
+
+        playerAnimator.runtimeAnimatorController = startingAnimatorOverride;
+
+        switch (equipmentItem.ThisEquipmentType)
         {
             case EquipmentType.Head:
                 Destroy(activeHeadSlotObject);
