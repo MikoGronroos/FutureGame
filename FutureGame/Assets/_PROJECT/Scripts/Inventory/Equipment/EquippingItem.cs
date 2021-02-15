@@ -46,7 +46,10 @@ public class EquippingItem : MonoBehaviour
             case EquipmentType.HandHeld:
                 currentWeapon = Instantiate(equipmentItem.ItemObject, handParent);
                 activeHandSlotObject = currentWeapon;
-                playerAnimator.runtimeAnimatorController = equipmentItem.ThisAnimatorOverrideController;
+                if (equipmentItem.ThisAnimatorOverrideController != null)
+                {
+                    playerAnimator.runtimeAnimatorController = equipmentItem.ThisAnimatorOverrideController;
+                }
                 break;
         }
 

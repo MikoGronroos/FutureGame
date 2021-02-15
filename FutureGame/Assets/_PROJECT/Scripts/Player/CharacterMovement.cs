@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour, IMovement
 {
 
-    [SerializeField] private float currentSpeed;
-
     [SerializeField] private float walkingSpeed;
+
+    [SerializeField] private float airControlPercent;
 
     [SerializeField] private float crouchingSpeed;
     [SerializeField] private bool isCrouching;
@@ -17,61 +18,65 @@ public class CharacterMovement : MonoBehaviour, IMovement
     [SerializeField] private float jumpForce;
     [SerializeField] private float jumpingStaminaReduce;
 
-    [SerializeField] private float gravity;
-
     [SerializeField] private Animator animator;
 
-    private Vector3 moveDirection = Vector3.zero;
+    [SerializeField] private bool isGrounded;
+
 
     private CharacterOwner _charOwner;
-    private CharacterController _controller;
+    private GroundCheck _groundCheck;
+    private Rigidbody _rigidbody;
 
     //Input
-    [SerializeField] private float _horizontalInput;
-    [SerializeField] private float _verticalInput;
+    private float _horizontalInput;
+    private float _verticalInput;
 
     private bool _hasJumped;
 
+    private float CurrentTargetForce
+    {
+        get
+        {
+            if (isCrouching)
+            {
+                return crouchingSpeed;
+            }
+
+            if (isRunning)
+            {
+                return runningSpeed;
+            }
+
+            return walkingSpeed;
+        }
+    }
+
     private void Awake()
     {
+        _groundCheck = GetComponent<GroundCheck>();
         _charOwner = GetComponent<CharacterOwner>();
-        _controller = GetComponent<CharacterController>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
+        isGrounded = _groundCheck.Grounded();
+        AnimationHandler(_horizontalInput, _verticalInput);
         HandleInput();
-        Crouch();
-        SetSpeed();
+    }
+
+    private void AnimationHandler(float horizontalInput, float verticalInput)
+    {
+        animator.SetInteger("horizontalInput", (int)horizontalInput);
+        animator.SetInteger("verticalInput", (int)verticalInput);
+        animator.SetBool("isRunning", isRunning);
+        animator.SetBool("isCrouching", isCrouching);
+    }
+
+    private void FixedUpdate()
+    {
         Movement(_horizontalInput, _verticalInput);
-    }
-
-    private void Crouch()
-    {
-        if (isCrouching)
-        {
-            animator.SetBool("isCrouching", true);
-        }
-        else
-        {
-            animator.SetBool("isCrouching", false);
-        }
-    }
-
-    private void SetSpeed()
-    {
-        if (isRunning)
-        {
-            _charOwner.CharacterStats.CurrentStamina -= runningStaminaReduce * Time.deltaTime;
-            currentSpeed = runningSpeed;
-        }else if (isCrouching)
-        {
-            currentSpeed = crouchingSpeed;
-        }
-        else
-        {
-            currentSpeed = walkingSpeed;
-        }
+        AddJumpVelocity();
     }
 
     private void HandleInput()
@@ -85,44 +90,37 @@ public class CharacterMovement : MonoBehaviour, IMovement
 
     public void Movement(float horizontalInput, float verticalInput)
     {
-
-        animator.SetInteger("horizontalInput", (int)horizontalInput);
-        animator.SetInteger("verticalInput", (int)verticalInput);
-
-        if (new Vector2(horizontalInput, verticalInput) == Vector2.zero)
+        if (Mathf.Abs(horizontalInput) - Mathf.Epsilon > 0 || Mathf.Abs(verticalInput) - Mathf.Epsilon > 0)
         {
-            animator.SetBool("isRunning", false);
-        }
+            Transform t = transform;
+            Vector3 desiredMove = t.forward * verticalInput + t.right * horizontalInput;
 
-        if (_controller.isGrounded)
-        {
-            moveDirection = new Vector3(horizontalInput, 0, verticalInput);
-            moveDirection.Normalize();
-            moveDirection = transform.TransformDirection(moveDirection);
-            moveDirection *= currentSpeed;
-            if (new Vector2(horizontalInput, verticalInput) != Vector2.zero)
+            desiredMove.x *= (isGrounded ? CurrentTargetForce : CurrentTargetForce * airControlPercent);
+            desiredMove.z *= (isGrounded ? CurrentTargetForce : CurrentTargetForce * airControlPercent);
+
+            if (_rigidbody.velocity.sqrMagnitude < (CurrentTargetForce * CurrentTargetForce))
             {
-                if (isRunning)
-                {
-                    animator.SetBool("isRunning", true);
-                }
-                else if (isCrouching)
-                {
-                    animator.SetBool("isRunning", false);
-                }
-                else
-                {
-                    animator.SetBool("isRunning", false);
-                }
+                Debug.Log(CurrentTargetForce);
+                _rigidbody.AddForce(desiredMove, ForceMode.Impulse);
             }
+        }
+    }
+
+    private void AddJumpVelocity()
+    {
+        if (isGrounded)
+        {
+            _rigidbody.drag = 5f;
+
             if (_hasJumped)
             {
-                moveDirection.y = jumpForce;
+                _rigidbody.drag = 0f;
+                Vector3 velocity = _rigidbody.velocity;
+                velocity = new Vector3(velocity.x, 0f, velocity.z);
+                _rigidbody.velocity = velocity;
+                _rigidbody.AddForce(new Vector3(0f, jumpForce, 0f), ForceMode.Impulse);
                 _charOwner.CharacterStats.CurrentStamina -= jumpingStaminaReduce;
             }
         }
-        moveDirection.y -= gravity * Time.deltaTime;
-        _controller.Move(moveDirection * Time.deltaTime);
     }
-
 }
