@@ -31,7 +31,7 @@ public class CharacterMovement : MonoBehaviour, IMovement
     private float _horizontalInput;
     private float _verticalInput;
 
-    private bool _hasJumped;
+    [SerializeField] private bool _hasJumped;
 
     private float CurrentTargetForce
     {
@@ -100,7 +100,6 @@ public class CharacterMovement : MonoBehaviour, IMovement
 
             if (_rigidbody.velocity.sqrMagnitude < (CurrentTargetForce * CurrentTargetForce))
             {
-                Debug.Log(CurrentTargetForce);
                 _rigidbody.AddForce(desiredMove, ForceMode.Impulse);
             }
         }

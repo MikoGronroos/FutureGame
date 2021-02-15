@@ -11,5 +11,7 @@ public class Controls : ScriptableObject
     public KeyCode StrafeLeftInput;
     public KeyCode StrafeRightInput;
     public KeyCode CrouchInput;
+    public KeyCode JumpInput;
+    public KeyCode RunInput;
 
 }

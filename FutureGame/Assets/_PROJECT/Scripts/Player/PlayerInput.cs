@@ -30,7 +30,7 @@ public class PlayerInput : MonoBehaviour, IInput
 
     public bool RunInput()
     {
-        return Input.GetButton("Run");
+        return Input.GetKey(Settings.Instance.InputSettings.RunInput);
     }
 
     public bool InteractInput()
@@ -55,7 +55,7 @@ public class PlayerInput : MonoBehaviour, IInput
 
     public bool JumpInput()
     {
-        return Input.GetButtonDown("Jump");
+        return Input.GetKeyDown(Settings.Instance.InputSettings.JumpInput);
     }
     
     public bool CrouchInput()

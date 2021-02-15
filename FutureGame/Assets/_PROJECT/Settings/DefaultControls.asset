@@ -19,3 +19,5 @@ MonoBehaviour:
   StrafeLeftInput: 97
   StrafeRightInput: 100
   CrouchInput: 306
+  JumpInput: 32
+  RunInput: 304

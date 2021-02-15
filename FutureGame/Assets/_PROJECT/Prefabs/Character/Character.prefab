@@ -83,7 +83,7 @@ MonoBehaviour:
   isRunning: 0
   runningSpeed: 3.9
   runningStaminaReduce: 1.32
-  jumpForce: 6
+  jumpForce: 11
   jumpingStaminaReduce: 11
   animator: {fileID: 430920315}
   isGrounded: 0
