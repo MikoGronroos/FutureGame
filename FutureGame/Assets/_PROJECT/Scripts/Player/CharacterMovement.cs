@@ -51,7 +51,16 @@ public class CharacterMovement : MonoBehaviour, IMovement
         }
     }
 
-    private void Awake()
+    private void OnDisable()
+    {
+        _horizontalInput = 0;
+        _verticalInput = 0;
+        isCrouching = false;
+        isRunning = false;
+        AnimationHandler(_horizontalInput, _verticalInput);
+    }
+
+    private void Awake() 
     {
         _groundCheck = GetComponent<GroundCheck>();
         _charOwner = GetComponent<CharacterOwner>();

@@ -11,6 +11,26 @@ public class CraftSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Inventory.Instance.AddItemToInventory(ItemDictionary.Instance.GetItemByID(_slotRecipe.FinalItemId));
+
+        CraftItem();
+
     }
+
+    private void CraftItem()
+    {
+        for (int i = 0; i < _slotRecipe.ItemsNeeded.Length; i++)
+        {
+            if (!Inventory.Instance.CheckIfInventoryHasAmountOfItems((int)_slotRecipe.ItemsNeeded[i].x, (int)_slotRecipe.ItemsNeeded[i].y))
+            {
+                return;
+            }
+        }
+
+        for (int i = 0; i < _slotRecipe.ItemsNeeded.Length; i++)
+        {
+            Inventory.Instance.RemoveItemFromInventoryWithId((int)_slotRecipe.ItemsNeeded[i].x, (int)_slotRecipe.ItemsNeeded[i].y);
+        }
+        Inventory.Instance.AddToInventory(ItemDictionary.Instance.GetItemByID(_slotRecipe.FinalItemId), 1);
+    }
+
 }

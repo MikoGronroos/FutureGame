@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1129635635272787684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1129635635272787685}
+  m_Layer: 0
+  m_Name: WoodenBowOnHand 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1129635635272787685
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129635635272787684}
+  m_LocalRotation: {x: 0.00022535687, y: -0.042921256, z: 0.000009681521, w: 0.9990785}
+  m_LocalPosition: {x: -0.1665926, y: 3.304196, z: 15.302908}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 587716303097297675}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1129635636587568352
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1129635635272787685}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.13952154
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.044797756
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.01401297
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.03050957
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.030189268
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7064609
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7064495
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 100.00004
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100.00004
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+      propertyPath: m_Name
+      value: WoodenBow
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+--- !u!4 &587716303097297675 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 96bb6c145f925f445a5b867e9c99fc48, type: 3}
+  m_PrefabInstance: {fileID: 1129635636587568352}
+  m_PrefabAsset: {fileID: 0}

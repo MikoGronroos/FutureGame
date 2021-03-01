@@ -10,11 +10,11 @@ public class Bed : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("Spawnpoint set.");
         WorldManager.Instance.SpawnPoint.SpawnPoint = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
         MessageReceiver.SubscrideToMessage("MorningRisesEvent", MorningRisesEvent);
         MessageReceiver.SubscrideToMessage("EveningFallsEvent", EveningFallsEvent);
         isSleeping = false;
+        canSleep = false;
     }
 
     public void Interact()
@@ -47,7 +47,10 @@ public class Bed : MonoBehaviour
     private void MorningRisesEvent(string name, string message)
     {
         canSleep = false;
-        WakeUp();
-    }
 
+        if (isSleeping)
+        {
+            WakeUp();
+        }
+    }
 }

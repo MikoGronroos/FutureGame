@@ -62,11 +62,13 @@ public class DayCycle : MonoBehaviour
     private void StartDay()
     {
         isNight = false;
+        MessageSender.SendMessageToClients("MorningRisesEvent");
     }
 
     private void StartNight()
     {
         isNight = true;
+        MessageSender.SendMessageToClients("EveningFallsEvent");
     }
 
 }

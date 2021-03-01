@@ -1,0 +1,182 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8652239970722269993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037f47eb97cb4fc4a8976a6e1b84dd19, type: 3}
+  m_Name: 009f2a5b-8002-4103-adce-ca19de093b4d
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 0
+  dialogueText: Satine is leaving coruscant soon.
+  children:
+  - 32c33568-71e8-45dd-b38e-c1640902cdd0
+  - af1983ce-530b-49fc-9799-f013d72b181a
+  - 59d829af-074a-45d3-accb-976d1fc4bd23
+  thisRect:
+    serializedVersion: 2
+    x: 91
+    y: 192
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
+  condition:
+    and: []
+--- !u!114 &-8246005224136895781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037f47eb97cb4fc4a8976a6e1b84dd19, type: 3}
+  m_Name: af1983ce-530b-49fc-9799-f013d72b181a
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 1
+  dialogueText: Can I still catch up with her?
+  children:
+  - 4ac2982f-280f-4bc9-8ee3-76c13b75a8a8
+  thisRect:
+    serializedVersion: 2
+    x: 384
+    y: 304
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: GiveQuest
+  condition:
+    and: []
+--- !u!114 &-7302817225694416022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037f47eb97cb4fc4a8976a6e1b84dd19, type: 3}
+  m_Name: 59d829af-074a-45d3-accb-976d1fc4bd23
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 1
+  dialogueText: Hey. I just want to say thank you!
+  children:
+  - ba6d777e-879d-4fde-bb9a-2201535987df
+  thisRect:
+    serializedVersion: 2
+    x: 379
+    y: 413
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
+  condition:
+    and:
+    - or:
+      - predicate: CompletedQuest
+        parameters:
+        - Obi-Wan In Despaire
+        negate: 0
+--- !u!114 &-6139134861804999271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037f47eb97cb4fc4a8976a6e1b84dd19, type: 3}
+  m_Name: 4ac2982f-280f-4bc9-8ee3-76c13b75a8a8
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 0
+  dialogueText: Yes. But you should run.
+  children: []
+  thisRect:
+    serializedVersion: 2
+    x: 625
+    y: 304
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: TestCompletion
+  condition:
+    and: []
+--- !u!114 &-1403363746257885467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037f47eb97cb4fc4a8976a6e1b84dd19, type: 3}
+  m_Name: ba6d777e-879d-4fde-bb9a-2201535987df
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 0
+  dialogueText: No problem. Happy to help a Jedi Knight.
+  children: []
+  thisRect:
+    serializedVersion: 2
+    x: 629
+    y: 415
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
+  condition:
+    and: []
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e909a8d352ffa6a4aa6650b4559fef93, type: 3}
+  m_Name: SatineAndObiwan
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -8652239970722269993}
+  - {fileID: 8867853999161190705}
+  - {fileID: -8246005224136895781}
+  - {fileID: -6139134861804999271}
+  - {fileID: -7302817225694416022}
+  - {fileID: -1403363746257885467}
+  newNodeOffset: {x: 250, y: 0}
+--- !u!114 &8867853999161190705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037f47eb97cb4fc4a8976a6e1b84dd19, type: 3}
+  m_Name: 32c33568-71e8-45dd-b38e-c1640902cdd0
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 1
+  dialogueText: Oh I must have forgot.
+  children: []
+  thisRect:
+    serializedVersion: 2
+    x: 373
+    y: 138
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
+  condition:
+    and: []

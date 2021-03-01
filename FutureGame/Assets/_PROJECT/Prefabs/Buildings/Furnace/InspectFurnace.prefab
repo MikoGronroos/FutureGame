@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 974240453689933641}
   - component: {fileID: 974240453689933640}
   m_Layer: 12
-  m_Name: BuildingBlock
+  m_Name: InspectFurnace
   m_TagString: BuildBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 2cb97f9e4b870d04ebcf4590aec116cd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -1,0 +1,193 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8011548697369524479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037f47eb97cb4fc4a8976a6e1b84dd19, type: 3}
+  m_Name: ee5397cb-5db2-45b9-8c3a-adb636d27e6e
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 1
+  dialogueText: Sorry. I don't have the time right now.
+  children: []
+  thisRect:
+    serializedVersion: 2
+    x: 352
+    y: 219
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
+  condition:
+    and: []
+--- !u!114 &-6825438260884637968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037f47eb97cb4fc4a8976a6e1b84dd19, type: 3}
+  m_Name: 7fd565cd-193f-4310-bb41-d8391ae4e8b1
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 1
+  dialogueText: Here is your wood.
+  children: []
+  thisRect:
+    serializedVersion: 2
+    x: 350
+    y: 312
+    width: 200
+    height: 100
+  onEnterAction: RemoveQuestItem
+  onExitAction: CompleteQuest
+  condition:
+    and:
+    - or:
+      - predicate: InventoryContainsItem
+        parameters:
+        - 6
+        negate: 0
+    - or:
+      - predicate: CompletedQuest
+        parameters:
+        - The Beginning
+        negate: 1
+    - or:
+      - predicate: HasCompeletedObjective
+        parameters:
+        - The Beginning
+        - First
+        negate: 0
+--- !u!114 &-5133665873222149702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037f47eb97cb4fc4a8976a6e1b84dd19, type: 3}
+  m_Name: d5fe9ef8-c065-4d9a-b3fa-fe07e9e5042f
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 1
+  dialogueText: Of course.
+  children: []
+  thisRect:
+    serializedVersion: 2
+    x: 830
+    y: 100
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: GiveQuest
+  condition:
+    and: []
+--- !u!114 &-1157593955152367464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037f47eb97cb4fc4a8976a6e1b84dd19, type: 3}
+  m_Name: 2a9b7e0b-f751-4615-8c1d-234f9f72417b
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 0
+  dialogueText: Could you get me some fire wood please?
+  children:
+  - d5fe9ef8-c065-4d9a-b3fa-fe07e9e5042f
+  thisRect:
+    serializedVersion: 2
+    x: 580
+    y: 99
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
+  condition:
+    and: []
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e909a8d352ffa6a4aa6650b4559fef93, type: 3}
+  m_Name: The Beginning
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 2738382058129531187}
+  - {fileID: 3949851187593824788}
+  - {fileID: -8011548697369524479}
+  - {fileID: -1157593955152367464}
+  - {fileID: -5133665873222149702}
+  - {fileID: -6825438260884637968}
+  newNodeOffset: {x: 250, y: 0}
+--- !u!114 &2738382058129531187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037f47eb97cb4fc4a8976a6e1b84dd19, type: 3}
+  m_Name: b20e566d-86d7-4e08-8c4e-c869dbbc2f4a
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 0
+  dialogueText: Hey could you help an old woman in need.
+  children:
+  - f965d466-930e-45f5-b83b-c886d06ab630
+  - ee5397cb-5db2-45b9-8c3a-adb636d27e6e
+  - 7fd565cd-193f-4310-bb41-d8391ae4e8b1
+  thisRect:
+    serializedVersion: 2
+    x: 100
+    y: 100
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
+  condition:
+    and: []
+--- !u!114 &3949851187593824788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 037f47eb97cb4fc4a8976a6e1b84dd19, type: 3}
+  m_Name: f965d466-930e-45f5-b83b-c886d06ab630
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 1
+  dialogueText: How can I be of service.
+  children:
+  - 2a9b7e0b-f751-4615-8c1d-234f9f72417b
+  thisRect:
+    serializedVersion: 2
+    x: 353
+    y: 100
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
+  condition:
+    and: []

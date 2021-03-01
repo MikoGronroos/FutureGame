@@ -19,5 +19,5 @@ MonoBehaviour:
   StackSize: 0
   IsStackable: 0
   ThisEquipmentType: 4
-  ItemObject: {fileID: 2622205424404358655, guid: 432cea74bb6256c4b92f7ade0ba19294, type: 3}
+  ItemObject: {fileID: 372362746207817644, guid: d838e00bd45e11f41aa5828ba1ee4fa0, type: 3}
   ThisAnimatorOverrideController: {fileID: 22100000, guid: 5144051811a1c2547adf43050d61accb, type: 2}

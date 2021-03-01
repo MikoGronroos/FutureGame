@@ -19,7 +19,7 @@ public class ItemContainer
         _playerCameraLook = MonoBehaviour.FindObjectOfType<CameraLook>();
         _characterMovement = MonoBehaviour.FindObjectOfType<CharacterMovement>();
         _playerAttack = MonoBehaviour.FindObjectOfType<PlayerAttack>();
-        slotGameObject = Resources.Load("Prefabs/InventorySlot") as GameObject;
+        slotGameObject = Resources.Load("InventorySlot") as GameObject;
         containerGameObject = containerObject;
     }
 

@@ -63,7 +63,7 @@ public class Slot : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler
         itemInInventoryObject.transform.SetParent(parentObject.transform);
         eventData.pointerDrag = itemInInventoryObject;
 
-        CurrentAmountOfItems--;
+        RemoveItem();
     }
 
     public virtual void OnDrag(PointerEventData eventData)
@@ -103,7 +103,22 @@ public class Slot : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler
         }
     }
 
-    public virtual void RefreshItem(Item item)
+    public virtual bool RemoveItem()
+    {
+        CurrentAmountOfItems--;
+        return true;
+    }
+
+    public virtual void AddItem(Item item)
+    {
+        if (CurrentAmountOfItems == 0)
+        {
+            RefreshItem(item);
+        }
+        CurrentAmountOfItems++;
+    }
+
+    private void RefreshItem(Item item)
     {
 
         if (item == null)

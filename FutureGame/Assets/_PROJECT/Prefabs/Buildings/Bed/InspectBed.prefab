@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9e944cf94ce29ff43af4da8c3f4bda12, type: 2}
+  - {fileID: 2100000, guid: 2cb97f9e4b870d04ebcf4590aec116cd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 6626787367521544009}
   - component: {fileID: 6626787367521544008}
   m_Layer: 0
-  m_Name: Bed
+  m_Name: InspectBed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -160,7 +160,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 43375b21ca2fd174ca613ba3caba94c2, type: 2}
+  - {fileID: 2100000, guid: 80c922137133fd043ac74c9f49933794, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -255,7 +255,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 183b2daed47dece46967aede35bd7df9, type: 2}
+  - {fileID: 2100000, guid: 80c922137133fd043ac74c9f49933794, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -350,7 +350,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 183b2daed47dece46967aede35bd7df9, type: 2}
+  - {fileID: 2100000, guid: 80c922137133fd043ac74c9f49933794, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -445,7 +445,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 183b2daed47dece46967aede35bd7df9, type: 2}
+  - {fileID: 2100000, guid: 80c922137133fd043ac74c9f49933794, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -540,7 +540,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 183b2daed47dece46967aede35bd7df9, type: 2}
+  - {fileID: 2100000, guid: 80c922137133fd043ac74c9f49933794, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

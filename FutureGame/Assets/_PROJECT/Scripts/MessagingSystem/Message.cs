@@ -15,10 +15,10 @@ public class Message : ScriptableObject
         if (thisAction != null)
         {
             thisAction(MessageName, OnReceivedMessage);
-            Debug.Log($"{MessageName} has sent message which reads: {OnReceivedMessage}. This message has {thisAction.GetInvocationList().Length} listeners!");
+            //Debug.Log($"{MessageName} has sent message which reads: {OnReceivedMessage}. This message has {thisAction.GetInvocationList().Length} listeners!");
             return true;
         }
-        Debug.LogWarning($"{MessageName} has zero listeners!");
+        //Debug.LogWarning($"{MessageName} has zero listeners!");
         return false;
     }
 }

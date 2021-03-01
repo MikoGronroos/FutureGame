@@ -7,13 +7,13 @@ public class Inventory : MonoBehaviour
     [SerializeField] private GameObject _characterInfoPanel;
 
     [SerializeField] private Transform inventoryParent;
-    [SerializeField] private List<InventorySlot> slots;
+    [SerializeField] private List<InventorySlot> slots = new List<InventorySlot>();
 
     [SerializeField] private ItemContainer container;
 
     private bool _inventoryIsOpen;
 
-    private List<StoredItem> _inventoryItems = new List<StoredItem>();
+    [SerializeField] private List<StoredItem> _inventoryItems = new List<StoredItem>();
 
     #region Singleton
 
@@ -60,10 +60,6 @@ public class Inventory : MonoBehaviour
                 MessageSender.SendMessageToClients("InventoryToggle");
             }
         }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            AddItemToInventory(ItemDictionary.Instance.GetItemByID(1));
-        }
     }
 
     #endregion
@@ -103,10 +99,22 @@ public class Inventory : MonoBehaviour
         return null;
     }
 
+    public InventorySlot GetSlotWithItemId(int id)
+    {
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (slots[i].GetCurrentItem() == ItemDictionary.Instance.GetItemByID(id))
+            {
+                return slots[i];
+            }
+        }
+        return null;
+    }
+
     #endregion
 
     //Call this when picking up item from ground. Searches for first empty slot and instantiates item there.
-    public StoredItem InventoryStorageHasItem(Item item)
+    public StoredItem GetItemFromItemStorage(Item item)
     {
         for (int i = 0; i < _inventoryItems.Count; i++)
         {
@@ -115,64 +123,84 @@ public class Inventory : MonoBehaviour
                 return _inventoryItems[i];
             }
         }
-        return null;
+        StoredItem emptyItem = new StoredItem(null);
+        return emptyItem;
     }
 
-    public void AddItemToInventory(Item item)
+    public bool CheckIfInventoryHasAmountOfItems(int id, int amount)
     {
-        bool itemIsForEmptySlot = false;
-        InventorySlot slot = GetValidSlotForItem(item);
-
-        if (InventoryStorageHasItem(item) == null)
+        for (int i = 0; i < _inventoryItems.Count; i++)
         {
-            StoredItem storedItem = new StoredItem(item);
-            _inventoryItems.Add(storedItem);
-        }
-        else
-        {
-            InventoryStorageHasItem(item).CurrentAmount++;
-        }
-
-        if (slot == null)
-        {
-            slot = GetEmptySlot();
-            itemIsForEmptySlot = true;
-            if (slot == null)
+            if (_inventoryItems[i].ThisItem.Id == id && _inventoryItems[i].CurrentAmount >= amount)
             {
-                return;
+                return true;
             }
         }
+        return false;
+    }
 
-        if (itemIsForEmptySlot)
+    public void AddToInventory(Item item, int amount)
+    {
+        for (int i = 0; i < amount; i++)
         {
-            slot.RefreshItem(item);
-            slot.CurrentAmountOfItems++;
-        }
-        else
-        {
-            slot.CurrentAmountOfItems++;
-        }
+            InventorySlot slot = GetValidSlotForItem(item);
 
+            if (GetItemFromItemStorage(item).ThisItem != item)
+            {
+                StoredItem storedItem = new StoredItem(item);
+                _inventoryItems.Add(storedItem);
+            }
+            else
+            {
+                GetItemFromItemStorage(item).CurrentAmount++;
+            }
+
+            if (slot == null)
+            {
+                slot = GetEmptySlot();
+                if (slot == null)
+                {
+                    return;
+                }
+            }
+
+            slot.AddItem(item);
+        }
     }
 
     #region Inventory Items List
 
-    public StoredItem GetStoredItem(Item item)
+    public bool InventoryHasItem(int id)
     {
-        for (int i = 0; i < _inventoryItems.Count; i++)
+        Item itemToSearch = ItemDictionary.Instance.GetItemByID(id);
+        foreach (StoredItem item in _inventoryItems)
         {
-            if (_inventoryItems[i].ThisItem.Equals(item))
+            if (item.GetThisItem() == itemToSearch)
             {
-                return _inventoryItems[i];
+                return true;
             }
         }
-        return null;
+        return false;
+    }
+
+    public void RemoveItemFromInventoryWithId(int id, int amount)
+    {
+        if (InventoryHasItem(id))
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                InventorySlot slot = GetSlotWithItemId(id);
+                GetItemFromItemStorage(ItemDictionary.Instance.GetItemByID(id)).CurrentAmount--;
+                slot.RemoveItem();
+            }
+        }
     }
 
     #endregion
 
 }
 
+[System.Serializable]
 public class StoredItem
 {
     public Item ThisItem;
@@ -184,6 +212,11 @@ public class StoredItem
     {
         ThisItem = item;
         CurrentAmount = 1;
+    }
+
+    public Item GetThisItem()
+    {
+        return ThisItem;
     }
 
 }

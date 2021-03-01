@@ -4,15 +4,11 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour, IAttack
 {
 
-    [SerializeField] private float range;
     [SerializeField] private float damage;
     [SerializeField] private float speed;
 
     [SerializeField] private bool hasAttacked;
 
-    [SerializeField] private LayerMask ignoreMask;
-
-    [SerializeField] private float damageReduceMultiplier = 0.135f;
     [SerializeField] private Animator animator;
 
     private CharacterOwner _charOwner;
@@ -34,10 +30,11 @@ public class PlayerAttack : MonoBehaviour, IAttack
         }
     }
 
+    #region Stats Changers
+
     public void ChangeStats(float damage, float dist, float speed)
     {
         SetDamage(damage);
-        SetRange(dist);
         SetSpeed(speed);
     }
 
@@ -46,24 +43,21 @@ public class PlayerAttack : MonoBehaviour, IAttack
         this.speed = speed;
     }
 
-    private void SetRange(float dist)
-    {
-        range = dist;
-    }
-
     private void SetDamage(float damage)
     {
         this.damage = damage;
     }
 
-    IEnumerator AttackSpeedCalc()
+    #endregion
+
+    IEnumerator WhileAttacking()
     {
 
         hasAttacked = true;
 
         yield return new WaitForSeconds(speed);
 
-        animator.SetBool("isPunching", false);
+        animator.SetBool("isAttacking", false);
         hasAttacked = false;
 
         yield return null;
@@ -76,22 +70,8 @@ public class PlayerAttack : MonoBehaviour, IAttack
         {
             return;
         }
-        else
-        {
-            StartCoroutine(AttackSpeedCalc());
-        }
+        StartCoroutine(WhileAttacking());
 
-        Debug.Log("Attacked");
-        animator.SetBool("isPunching", true);
-
-        Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        if (Physics.Raycast(ray,  out var hit, range, ~ignoreMask))
-        {
-
-            if (hit.transform.TryGetComponent(out IDamageable hittedObject))
-            {
-                hittedObject.MakeDamage(damage);
-            }
-        }
+        animator.SetBool("isAttacking", true);
     }
 }

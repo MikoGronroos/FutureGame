@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class CharacterStats : MonoBehaviour, IDamageable
+public class CharacterStats : Character, IDamageable
 {
 
     [SerializeField] private float maxHealth;
@@ -157,6 +157,11 @@ public class CharacterStats : MonoBehaviour, IDamageable
 
         #endregion
 
+    }
+
+    public override Race GetCharacterRace()
+    {
+        return base.GetCharacterRace();
     }
 
 }

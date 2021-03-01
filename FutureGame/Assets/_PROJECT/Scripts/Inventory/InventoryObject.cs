@@ -61,9 +61,8 @@ public class InventoryObject : MonoBehaviour, IEndDragHandler, IDragHandler
         if (!DroppedOnSlot)
         {
             transform.position = _dragStartPos;
-            _lastSlot.RefreshItem(thisItem);
             _lastSlot.DeleteInventoryObject(gameObject);
-            _lastSlot.CurrentAmountOfItems++;
+            _lastSlot.AddItem(thisItem);
             return;
         }
         DroppedOnSlot = false;

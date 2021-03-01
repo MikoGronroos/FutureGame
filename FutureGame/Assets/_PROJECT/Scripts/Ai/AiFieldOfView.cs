@@ -24,10 +24,10 @@ public class AiFieldOfView : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(FindTargetsWithDelay(0.33f));
+        StartCoroutine(FindTargetsWithDelay(_aiController.GetReactionTime()));
     }
 
-    IEnumerator FindTargetsWithDelay(float delay)
+    private IEnumerator FindTargetsWithDelay(float delay)
     {
         while (true)
         {
@@ -51,9 +51,9 @@ public class AiFieldOfView : MonoBehaviour
 
                 if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
                 {
-                    if (target.transform.tag.Equals("Player"))
+                    if (target.TryGetComponent(out Character character))
                     {
-                        _aiController.HasSeenPlayer();
+                        _aiController.SawCharacter(character.GetCharacterRace(), target);
                     }
                     visibleTargets.Add(target);
                 }

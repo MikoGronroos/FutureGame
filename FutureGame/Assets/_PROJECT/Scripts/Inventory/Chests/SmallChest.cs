@@ -20,8 +20,6 @@ public class SmallChest : MonoBehaviour, IInteractable
 
         smallChestUI = FindObjectOfType<SmallChestUI>().gameObject;
 
-        Debug.Log(smallChestUI.name);
-
         itemContainer.InitContainer(smallChestUI);
         containerData = new ContainerData(itemContainer.GetContainerSize());
         closeChestButton.onClick.AddListener(CloseChest);
@@ -49,8 +47,7 @@ public class SmallChest : MonoBehaviour, IInteractable
 
             if (containerData.GetContents()[i] == null) continue;
 
-            chestSlotParent.GetChild(i).GetComponent<InventorySlot>().RefreshItem(containerData.GetContents()[i].ThisItem);
-            chestSlotParent.GetChild(i).GetComponent<InventorySlot>().CurrentAmountOfItems++;
+            chestSlotParent.GetChild(i).GetComponent<InventorySlot>().AddItem(containerData.GetContents()[i].ThisItem);
         }
 
         yield return null;

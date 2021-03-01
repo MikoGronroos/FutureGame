@@ -28,11 +28,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8923751912506442500}
+  - component: {fileID: 2869167279144060880}
   - component: {fileID: 8923751912506442502}
   - component: {fileID: 8923751912506442521}
   - component: {fileID: 8923751912506442520}
   - component: {fileID: 8923751912506442523}
-  - component: {fileID: 8923751912506442522}
   - component: {fileID: 8923751912506442525}
   - component: {fileID: 8923751912506442524}
   - component: {fileID: 8923751912506442527}
@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 8923751912506442513}
   - component: {fileID: 8923751912506442512}
   - component: {fileID: 8923751912506442515}
+  - component: {fileID: 7489151022592715226}
   - component: {fileID: 868930748527652234}
   - component: {fileID: 6516491486780496984}
   m_Layer: 13
@@ -64,6 +65,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2869167279144060880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8923751912506442514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a43a0c4eb0fd794eab30e2a35e0f8f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  conversantName: 
+  onDialogueStartEvents: []
+  onDialogueQuitEvents: []
 --- !u!114 &8923751912506442502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,6 +103,7 @@ MonoBehaviour:
   jumpingStaminaReduce: 11
   animator: {fileID: 430920315}
   isGrounded: 0
+  _hasJumped: 0
 --- !u!114 &8923751912506442521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c416bfb9e55e44c91543118be45017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterRace: 0
   maxHealth: 100
   maxStamina: 100
   maxThirst: 100
@@ -135,30 +153,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6085d2ab8dbf7af489c73910c85a533f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8923751912506442522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8923751912506442514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e9e2b15ece8aad478ba06909bf3929d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RunAnimationModule:
-    STATE: Run
-    Animator: {fileID: 0}
-  IdleAnimationModule:
-    STATE: Idle
-    Animator: {fileID: 0}
-  WalkAnimationModule:
-    STATE: Walk
-    Animator: {fileID: 0}
-  RollAnimationModule:
-    STATE: Roll
-    Animator: {fileID: 0}
 --- !u!114 &8923751912506442525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,6 +271,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c88dae28dd3bb0a4eabb8936bd093583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7489151022592715226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8923751912506442514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75eca46f180b0184abf367c7785f935c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &868930748527652234
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -304,7 +310,7 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!1001 &8923751912391448620

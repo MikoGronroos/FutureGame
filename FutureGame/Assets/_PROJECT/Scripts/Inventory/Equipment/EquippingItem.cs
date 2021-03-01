@@ -52,14 +52,10 @@ public class EquippingItem : MonoBehaviour
                 }
                 break;
         }
-
-        Debug.Log("Item Equipped");
-
     }
 
     public void DequipItem(Item item)
     {
-        Debug.Log($"Dequipping {item.ItemName}");
         if (item == null) return;
 
         var equipmentItem = item as EquipmentItem;

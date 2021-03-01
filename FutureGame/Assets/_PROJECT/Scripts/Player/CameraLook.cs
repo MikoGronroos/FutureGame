@@ -19,11 +19,25 @@ public class CameraLook : MonoBehaviour
         Cursor.visible = false;
     }
 
+    private void OnDisable()
+    {
+        UpdateCameraPosition();
+    }
+
     private void Update()
     {
-        transform.position = cameraParentTransform.position + headOffset;
+        UpdateCameraPosition();
         CameraRotation();
         RotatePlayer();
+    }
+
+    private void UpdateCameraPosition()
+    {
+        if (transform == null || cameraParentTransform == null)
+        {
+            return;
+        }
+        transform.position = cameraParentTransform.position + headOffset;
     }
 
     private void CameraRotation()

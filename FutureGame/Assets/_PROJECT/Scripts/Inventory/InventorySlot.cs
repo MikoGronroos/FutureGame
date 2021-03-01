@@ -23,9 +23,9 @@ public class InventorySlot : Slot, IDropHandler, IBeginDragHandler, IDragHandler
         base.OnDrop(eventData);
     }
 
-    public override void RefreshItem(Item item)
+    public override void AddItem(Item item)
     {
-        base.RefreshItem(item);
+        base.AddItem(item);
     }
 
     public override void DeleteInventoryObject(GameObject itemCarrier)
@@ -36,6 +36,11 @@ public class InventorySlot : Slot, IDropHandler, IBeginDragHandler, IDragHandler
     public override Item GetCurrentItem()
     {
         return base.GetCurrentItem();
+    }
+
+    public override bool RemoveItem()
+    {
+        return base.RemoveItem();
     }
 
 }

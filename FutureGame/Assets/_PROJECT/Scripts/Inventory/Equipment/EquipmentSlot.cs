@@ -29,7 +29,7 @@ public class EquipmentSlot : Slot, IDropHandler, IBeginDragHandler, IDragHandler
     {
 
         var equipment = eventData.pointerDrag.GetComponent<InventoryObject>().ThisItem as EquipmentItem;
-        if (equipment.ThisEquipmentType != acceptedEquipmentType) return;
+        if (equipment == null || equipment.ThisEquipmentType != acceptedEquipmentType) return;
 
         base.OnDrop(eventData);
 
@@ -42,9 +42,14 @@ public class EquipmentSlot : Slot, IDropHandler, IBeginDragHandler, IDragHandler
         _equippingItem.DequipItem(item);
     }
 
-    public override void RefreshItem(Item item)
+    public override void AddItem(Item item)
     {
-        base.RefreshItem(item);
+        base.AddItem(item);
+    }
+
+    public override bool RemoveItem()
+    {
+        return base.RemoveItem();
     }
 
     public override void DeleteInventoryObject(GameObject itemCarrier)
