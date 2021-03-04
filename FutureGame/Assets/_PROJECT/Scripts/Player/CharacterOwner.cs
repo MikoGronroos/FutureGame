@@ -11,7 +11,6 @@ public class CharacterOwner : MonoBehaviour
     private IGroundCheck _groundCheck;
     private PlayerUI _playerUI;
     private CharacterStats _characterStats;
-    private PlayerAttack _attack;
     private SpawnPlayer _spawnPlayer;
 
     public IInput Input { get { return _input; } private set { } }
@@ -20,7 +19,6 @@ public class CharacterOwner : MonoBehaviour
     public IGroundCheck GroundCheck { get { return _groundCheck; } private set { } }
     public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
     public CharacterStats CharacterStats { get { return _characterStats; } private set { } }
-    public PlayerAttack PlayerAttack { get { return _attack; } private set { } }
     public SpawnPlayer SpawnPlayer { get { return _spawnPlayer; } private set { } }
 
     private static CharacterOwner _instance;
@@ -42,7 +40,6 @@ public class CharacterOwner : MonoBehaviour
         _groundCheck = GetComponent<IGroundCheck>();
         _playerUI = GetComponent<PlayerUI>();
         _characterStats = GetComponent<CharacterStats>();
-        _attack = GetComponent<PlayerAttack>();
         _spawnPlayer = GetComponent<SpawnPlayer>();
     }
 

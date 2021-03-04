@@ -3,8 +3,10 @@
 public class EquippingItem : MonoBehaviour
 {
 
+    [SerializeField] private Item defaultRightHandItem;
+
     [SerializeField] private Animator playerAnimator;
-    [SerializeField] private AnimatorOverrideController startingAnimatorOverride;
+    [SerializeField] private PlayerAttack playerAttack;
 
     [SerializeField] private Transform headParent;
     [SerializeField] private Transform torsoParent;
@@ -18,6 +20,19 @@ public class EquippingItem : MonoBehaviour
     [SerializeField] private GameObject activeFeetSlotObject;
     [SerializeField] private GameObject activeHandSlotObject;
 
+    [SerializeField] private Item activeHeadSlotItem;
+    [SerializeField] private Item activeTorsoSlotItem;
+    [SerializeField] private Item activeLegSlotItem;
+    [SerializeField] private Item activeFeetSlotItem;
+    [SerializeField] private Item activeHandSlotItem;
+
+    private bool _dequippingFromEquipping;
+
+    private void Start()
+    {
+        EquipItem(defaultRightHandItem);
+    }
+
     public void EquipItem(Item item)
     {
         if (item == null) return;
@@ -30,27 +45,44 @@ public class EquippingItem : MonoBehaviour
             case EquipmentType.Head:
                 activeHeadSlotObject = currentWeapon;
                 currentWeapon.transform.SetParent(headParent);
+                activeHeadSlotItem = item;
                 break;
             case EquipmentType.Torso:
                 activeTorsoSlotObject = currentWeapon;
                 currentWeapon.transform.SetParent(torsoParent);
+                activeTorsoSlotItem = item;
                 break;
             case EquipmentType.Legs:
                 activeLegSlotObject = currentWeapon;
                 currentWeapon.transform.SetParent(legsParent);
+                activeLegSlotItem = item;
                 break;
             case EquipmentType.Feet:
                 activeFeetSlotObject = currentWeapon;
                 currentWeapon.transform.SetParent(feetParent);
+                activeFeetSlotItem = item;
                 break;
+            #region HandHeld
             case EquipmentType.HandHeld:
+
+                if (activeHandSlotItem != null)
+                {
+                    _dequippingFromEquipping = true;
+                    DequipItem(activeHandSlotItem);
+                }
+
+                activeHandSlotItem = item;
+
                 currentWeapon = Instantiate(equipmentItem.ItemObject, handParent);
                 activeHandSlotObject = currentWeapon;
                 if (equipmentItem.ThisAnimatorOverrideController != null)
                 {
                     playerAnimator.runtimeAnimatorController = equipmentItem.ThisAnimatorOverrideController;
                 }
+                currentWeapon.TryGetComponent(out HitDetection detection);
+                playerAttack.LoadWeapon(equipmentItem.Damage, 0.7f, detection);
                 break;
+                #endregion
         }
     }
 
@@ -59,8 +91,6 @@ public class EquippingItem : MonoBehaviour
         if (item == null) return;
 
         var equipmentItem = item as EquipmentItem;
-
-        playerAnimator.runtimeAnimatorController = startingAnimatorOverride;
 
         switch (equipmentItem.ThisEquipmentType)
         {
@@ -76,9 +106,17 @@ public class EquippingItem : MonoBehaviour
             case EquipmentType.Feet:
                 Destroy(activeFeetSlotObject);
                 break;
+            #region HandHeld
             case EquipmentType.HandHeld:
                 Destroy(activeHandSlotObject);
+                if (!_dequippingFromEquipping)
+                {
+                    activeHandSlotItem = null;
+                    EquipItem(defaultRightHandItem);
+                }
+                _dequippingFromEquipping = false;
                 break;
+            #endregion
             default:
                 return;
         }

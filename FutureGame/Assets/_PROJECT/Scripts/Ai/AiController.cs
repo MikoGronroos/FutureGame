@@ -39,6 +39,8 @@ public class AiController : Character, IDamageable
 
     [SerializeField] private bool canRoamAround;
 
+    [SerializeField] private bool stopIfCloseToPlayer;
+
     [Header("Ai Combat")]
     [SerializeField] private List<Race> hostileTowardsRaces = new List<Race>();
 
@@ -47,8 +49,13 @@ public class AiController : Character, IDamageable
     [SerializeField] private float runningSpeed;
 
     [Header("Miscellanious")]
+    [SerializeField] private bool isCloseToAPlayer;
+    [SerializeField] private float damping;
     [SerializeField] private Transform currentTarget;
     [SerializeField] private LayerMask targetMask;
+
+    [Header("Loot")]
+    [SerializeField] private LootTable thisLoot;
 
     [Header("State Machine")]
     [SerializeField] private AiState currentState;
@@ -73,9 +80,13 @@ public class AiController : Character, IDamageable
             if (health > maxHealth)
             {
                 currentHealth = maxHealth;
-            }else if (health <= 0)
+                return;
+            }
+            else if (health <= 0)
             {
                 currentHealth = 0;
+                currentState = AiState.dead;
+                return;
             }
             else
             {
@@ -98,6 +109,19 @@ public class AiController : Character, IDamageable
 
     public float CurrentStamina { get { return currentStamina; } set { currentStamina = value; } }
 
+    public Transform CurrentTarget
+    {
+        get
+        {
+            return currentTarget;
+        }
+        set
+        {
+            isCloseToAPlayer = CheckIfTargetIsPlayer(value);
+            currentTarget = value;
+        }
+    }
+
     public WeaponType WeaponType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     private void Awake()
@@ -113,6 +137,7 @@ public class AiController : Character, IDamageable
         CurrentHealth = maxHealth;
         CurrentStamina = maxStamina;
         _startingPosition = transform.position;
+        _aiPathfinding.SetAgentSpeed(walkingSpeed);
         if (canRoamAround)
         {
             currentState = AiState.roaming;
@@ -132,9 +157,16 @@ public class AiController : Character, IDamageable
         {
             #region roamingState
             case AiState.roaming:
+
+                if (isCloseToAPlayer && stopIfCloseToPlayer)
+                {
+                    currentState = AiState.stopped;
+                    return;
+                }
+
                 _aiPathfinding.SetAgentDestination(_roamPosition);
 
-                float reachedPositionDistance = 1f;
+                float reachedPositionDistance = 3f;
                 if (Vector3.Distance(transform.position, _roamPosition) < reachedPositionDistance)
                 {
                     _roamPosition = _aiPathfinding.RandomNavSphere(_startingPosition, Random.Range(minRoamRange, maxRoamRange), -1);
@@ -177,6 +209,28 @@ public class AiController : Character, IDamageable
 
                 break;
                 #endregion
+            #region deadState
+            case AiState.dead:
+
+                DecideLoot();
+                Destroy(gameObject);
+
+                break;
+            #endregion
+            #region stoppedState
+            case AiState.stopped:
+
+                _aiPathfinding.SetAgentDestination(transform.position);
+
+                var lookPos = CurrentTarget.position - transform.position;
+                lookPos.y = 0;
+                var rotation = Quaternion.LookRotation(lookPos);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
+
+                _aiPathfinding.ToggleMovement(false);
+
+                break;
+                #endregion
         }
     }
 
@@ -189,6 +243,17 @@ public class AiController : Character, IDamageable
         return false;
     }
 
+    private bool CheckIfTargetIsPlayer(Transform target)
+    {
+
+        if (target == null)
+        {
+            return false;
+        }
+
+        return target.TryGetComponent(out CharacterOwner _character);
+    }
+
     public void SawCharacter(Race race, Transform target)
     {
 
@@ -198,7 +263,7 @@ public class AiController : Character, IDamageable
         }
 
         bool isDisliked = CheckIfAiIsHostileTowardsRace(race);
-        currentTarget = target;
+        CurrentTarget = target;
 
         if (isHostile && isDisliked)
         {
@@ -234,10 +299,8 @@ public class AiController : Character, IDamageable
         {
             yield return new WaitForSeconds(delay);
 
-            if (currentTarget != null)
-            {
-                yield return null;
-            }
+            CurrentTarget = null;
+
             Collider[] objectThatTouch = Physics.OverlapSphere(transform.position, touchZoneRadius, targetMask);
             for (int i = 0; i < objectThatTouch.Length; i++)
             {
@@ -245,9 +308,27 @@ public class AiController : Character, IDamageable
                 {
                     if (CheckIfAiIsHostileTowardsRace(character.GetCharacterRace()))
                     {
-                        currentTarget = objectThatTouch[i].transform;
+                        CurrentTarget = objectThatTouch[i].transform;
+                        break;
+                    }
+
+                    if (CheckIfTargetIsPlayer(objectThatTouch[i].transform))
+                    {
+                        CurrentTarget = objectThatTouch[i].transform;
+                        break;
                     }
                 }
+            }
+        }
+    }
+
+    private void DecideLoot()
+    {
+        if (thisLoot != null)
+        {
+            Item current = thisLoot.LootItem();
+            if (current != null)
+            {
             }
         }
     }

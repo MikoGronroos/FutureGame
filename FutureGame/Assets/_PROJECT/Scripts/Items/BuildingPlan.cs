@@ -74,7 +74,7 @@ public class BuildingPlan : MonoBehaviour
 
                 for (int i = 0; i < _neededItems.Length; i++)
                 {
-                    Inventory.Instance.RemoveItemFromInventoryWithId((int)_neededItems[i].x, (int)_neededItems[i].y);
+                    Inventory.Instance.RemoveMultipleItemsFromInventoryWithId((int)_neededItems[i].x, (int)_neededItems[i].y);
                 }
 
                 PlaceObject(_realObject, currentlyInspecting.transform.position);

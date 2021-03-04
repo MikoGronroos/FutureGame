@@ -25,9 +25,21 @@ public class AiPathfinding : MonoBehaviour
 
         NavMeshHit navHit;
 
-        NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
+        if (NavMesh.SamplePosition(randDirection, out navHit, dist, layermask))
+        {
+            return navHit.position;
+        }
+        return RandomNavSphere(origin, dist, layermask);
+    }
 
-        return navHit.position;
+    public void ToggleMovement(bool value)
+    {
+        _agent.isStopped = value;
+    }
+
+    public void SetAgentSpeed(float speed)
+    {
+        _agent.speed = speed;
     }
 
 }

@@ -8,4 +8,9 @@ public class EquipmentItem : Item
     public EquipmentType ThisEquipmentType;
     public GameObject ItemObject;
     public AnimatorOverrideController ThisAnimatorOverrideController;
+
+    [Header("Weapon Stats")]
+
+    public float Damage;
+
 }

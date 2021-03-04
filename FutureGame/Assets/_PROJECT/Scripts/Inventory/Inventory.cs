@@ -183,7 +183,17 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public void RemoveItemFromInventoryWithId(int id, int amount)
+    public void RemoveSingleItemFromInvetoryWithId(int id)
+    {
+        if (InventoryHasItem(id))
+        {
+            InventorySlot slot = GetSlotWithItemId(id);
+            GetItemFromItemStorage(ItemDictionary.Instance.GetItemByID(id)).CurrentAmount--;
+            slot.RemoveItem();
+        }
+    }
+
+    public void RemoveMultipleItemsFromInventoryWithId(int id, int amount)
     {
         if (InventoryHasItem(id))
         {

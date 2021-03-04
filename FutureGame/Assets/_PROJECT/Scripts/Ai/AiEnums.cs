@@ -7,7 +7,9 @@
     passiveAttacking,
     searching,
     followingTarget,
-    fleeing
+    fleeing,
+    dead,
+    stopped
 
 }
 

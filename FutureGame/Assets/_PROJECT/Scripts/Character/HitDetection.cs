@@ -5,6 +5,8 @@ public class HitDetection : MonoBehaviour
 
     private Collider _damageCollider;
 
+    public float Damage;
+
     private void Awake()
     {
         _damageCollider = GetComponent<Collider>();
@@ -26,8 +28,7 @@ public class HitDetection : MonoBehaviour
     {
         if (other.TryGetComponent(out IDamageable damageable))
         {
-            damageable.MakeDamage(10);
+            damageable.MakeDamage(Damage);
         }
     }
-
 }

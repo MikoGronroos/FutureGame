@@ -5,21 +5,26 @@ public class PlayerAttack : MonoBehaviour, IAttack
 {
 
     [SerializeField] private float damage;
-    [SerializeField] private float speed;
 
     [SerializeField] private bool hasAttacked;
 
     [SerializeField] private Animator animator;
 
+    [SerializeField] private Transform rightHandTransform;
+
+    [SerializeField] private HitDetection _currentHitDetection;
     private CharacterOwner _charOwner;
-    private Camera _camera;
 
     public float Damage { get { return damage; } set { damage = value; } }
 
     private void Awake()
     {
-        _charOwner = GetComponent<CharacterOwner>();
-        _camera = Camera.main;
+        _charOwner = GetComponentInParent<CharacterOwner>();
+    }
+
+    private void Start()
+    {
+        LoadWeapon(10, 0.7f, _currentHitDetection);
     }
 
     private void Update()
@@ -30,48 +35,66 @@ public class PlayerAttack : MonoBehaviour, IAttack
         }
     }
 
-    #region Stats Changers
-
-    public void ChangeStats(float damage, float dist, float speed)
+    public void LoadWeapon(float damage, float speed, HitDetection detector)
     {
         SetDamage(damage);
-        SetSpeed(speed);
+        SetCurrentHitDetection(detector);
+        LoadStatsToCurrentHitDetector();
     }
 
-    private void SetSpeed(float speed)
-    {
-        this.speed = speed;
-    }
+    #region Stats Changers
 
     private void SetDamage(float damage)
     {
         this.damage = damage;
     }
 
-    #endregion
+    private void SetCurrentHitDetection(HitDetection detector)
+    {
+        _currentHitDetection = detector;
+    }
 
-    IEnumerator WhileAttacking()
+    private void LoadStatsToCurrentHitDetector()
     {
 
-        hasAttacked = true;
+        if (_currentHitDetection == null)
+        {
+            return;
+        }
 
-        yield return new WaitForSeconds(speed);
-
-        animator.SetBool("isAttacking", false);
-        hasAttacked = false;
-
-        yield return null;
+        _currentHitDetection.Damage = damage;
     }
+
+    #endregion
 
     public void Attack()
     {
-
         if (hasAttacked)
         {
             return;
         }
-        StartCoroutine(WhileAttacking());
-
         animator.SetBool("isAttacking", true);
+        hasAttacked = true;
     }
+
+    public void EndAttack()
+    {
+        animator.SetBool("isAttacking", false);
+        hasAttacked = false;
+    }
+
+    #region Handle Damage Collider
+
+    public void EnableRightHandDamageCollider()
+    {
+        _currentHitDetection.EnableCollider();
+    }
+
+    public void DisableRightHandDamageCollider()
+    {
+        _currentHitDetection.DisableCollider();
+    }
+
+    #endregion
+
 }

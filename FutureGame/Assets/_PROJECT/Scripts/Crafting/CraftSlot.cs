@@ -28,7 +28,7 @@ public class CraftSlot : MonoBehaviour, IPointerClickHandler
 
         for (int i = 0; i < _slotRecipe.ItemsNeeded.Length; i++)
         {
-            Inventory.Instance.RemoveItemFromInventoryWithId((int)_slotRecipe.ItemsNeeded[i].x, (int)_slotRecipe.ItemsNeeded[i].y);
+            Inventory.Instance.RemoveMultipleItemsFromInventoryWithId((int)_slotRecipe.ItemsNeeded[i].x, (int)_slotRecipe.ItemsNeeded[i].y);
         }
         Inventory.Instance.AddToInventory(ItemDictionary.Instance.GetItemByID(_slotRecipe.FinalItemId), 1);
     }

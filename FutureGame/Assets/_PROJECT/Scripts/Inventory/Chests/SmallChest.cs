@@ -30,7 +30,6 @@ public class SmallChest : MonoBehaviour, IInteractable
         containerData.AddItemToContents(ItemDictionary.Instance.GetItemByID(1), 3);
         containerData.AddItemToContents(ItemDictionary.Instance.GetItemByID(1), 4);
         containerData.AddItemToContents(ItemDictionary.Instance.GetItemByID(1), 5);
-        containerData.AddItemToContents(ItemDictionary.Instance.GetItemByID(5), 6);
         containerData.AddItemToContents(ItemDictionary.Instance.GetItemByID(7), 7);
     }
 
