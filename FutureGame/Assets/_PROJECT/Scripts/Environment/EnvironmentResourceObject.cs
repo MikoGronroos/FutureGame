@@ -4,11 +4,8 @@ public class EnvironmentResourceObject : MonoBehaviour
     , IDamageable
 {
 
+    [SerializeField] private LootTable thisLoot;
     [SerializeField] private float health;
-
-    [SerializeField] private WeaponType weaponTypeAllowedToMakeDamage;
-
-    public WeaponType WeaponType { get { return weaponTypeAllowedToMakeDamage; } set { } }
 
     public void MakeDamage(float amount)
     {
@@ -21,7 +18,20 @@ public class EnvironmentResourceObject : MonoBehaviour
 
     private void CollectObject()
     {
+        DecideLoot();
         Destroy(gameObject);
+    }
+
+    private void DecideLoot()
+    {
+        if (thisLoot != null)
+        {
+            Item current = thisLoot.LootItem();
+            if (current != null)
+            {
+                Inventory.Instance.AddToInventory(current, 1);
+            }
+        }
     }
 
     private bool CheckHealth(float health)

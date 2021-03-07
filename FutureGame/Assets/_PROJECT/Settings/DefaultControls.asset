@@ -13,11 +13,20 @@ MonoBehaviour:
   m_Name: DefaultControls
   m_EditorClassIdentifier: 
   Sensitivity: 1
-  InteractInput: 102
-  WalkForwardInput: 119
-  WalkBackwardInput: 115
-  StrafeLeftInput: 97
-  StrafeRightInput: 100
-  CrouchInput: 306
-  JumpInput: 32
-  RunInput: 304
+  keyCodes:
+  - KeyCodeName: WalkForward
+    PositiveKeyCode: 119
+  - KeyCodeName: WalkBackward
+    PositiveKeyCode: 115
+  - KeyCodeName: StrafeLeft
+    PositiveKeyCode: 97
+  - KeyCodeName: StrafeRight
+    PositiveKeyCode: 100
+  - KeyCodeName: Run
+    PositiveKeyCode: 304
+  - KeyCodeName: Crouch
+    PositiveKeyCode: 306
+  - KeyCodeName: Interact
+    PositiveKeyCode: 102
+  - KeyCodeName: Jump
+    PositiveKeyCode: 32

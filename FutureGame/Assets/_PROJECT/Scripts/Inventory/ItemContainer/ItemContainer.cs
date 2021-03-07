@@ -37,8 +37,7 @@ public class ItemContainer
     {
         if (value)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            CursorVisibility.SetCursorHidden();
             _playerCameraLook.enabled = true;
             _characterMovement.enabled = true;
             _playerAttack.enabled = true;
@@ -47,8 +46,7 @@ public class ItemContainer
         }
         else
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            CursorVisibility.SetCursorVisible();
             _playerCameraLook.enabled = false;
             _characterMovement.enabled = false;
             _playerAttack.enabled = false;

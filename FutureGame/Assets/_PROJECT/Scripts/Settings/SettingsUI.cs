@@ -5,6 +5,8 @@ using TMPro;
 public class SettingsUI : MonoBehaviour
 {
 
+    [SerializeField] private Button returnFromSettingsButton;
+
     [SerializeField] private Button videoSettingsButton;
     [SerializeField] private Button controlSettingsButton;
 
@@ -20,12 +22,18 @@ public class SettingsUI : MonoBehaviour
     [Header("---ControlSettings---")]
     [SerializeField] private TMP_InputField sensitivityField;
 
+    [SerializeField] private KeyCodeButton[] keyCodeButtons;
+
+    private SettingsSystem _settingsSystem;
+
     private void Awake()
     {
+        _settingsSystem = FindObjectOfType<SettingsSystem>();
         videoSettingsButton.onClick.AddListener(ToggleVideoSettingsUI);
         controlSettingsButton.onClick.AddListener(ToggleControlSettingsUI);
         saveSettingsButton.onClick.AddListener(SaveSettings);
         resetSettingsButton.onClick.AddListener(ResetSettings);
+        returnFromSettingsButton.onClick.AddListener(Return);
     }
 
     #region OnEnable & OnDisable
@@ -48,6 +56,8 @@ public class SettingsUI : MonoBehaviour
         InitializeControlSettingsUI(data.Controls);
     }
 
+    #region InitializeStuff
+
     private void InitializeVideoSettingsUI(SettingsScriptableObject data)
     {
         ambientOcclusion.isOn = data.AmbientOcclusion;
@@ -56,7 +66,42 @@ public class SettingsUI : MonoBehaviour
     private void InitializeControlSettingsUI(Controls data)
     {
         sensitivityField.placeholder.GetComponent<TextMeshProUGUI>().text = data.Sensitivity.ToString();
+        SetKeyCodeNames();
+        RefreshAllKeyCodeButtons(data);
     }
+
+    #endregion
+
+    #region RefreshKeyCodes
+
+    private void RefreshAllKeyCodeButtons(Controls data)
+    {
+        foreach (CustomKeyCode keycode in data.GetKeyCodes())
+        {
+            RefreshButtonText(keycode.KeyCodeName, keycode.PositiveKeyCode.ToString());
+        }
+    }
+
+    private void RefreshButtonText(string name, string keycode)
+    {
+        foreach (KeyCodeButton button in keyCodeButtons)
+        {
+            if (button.KeyCodeName == name)
+            {
+                button.ThisKeyCodeButton.RefreshInputText(keycode);
+                return;
+            }
+        }
+    }
+
+    private void SetKeyCodeNames()
+    {
+        foreach (KeyCodeButton button in keyCodeButtons)
+        {
+            button.ThisKeyCodeButton.SetKeyCodeName(button.KeyCodeName);
+        }
+    }
+    #endregion
 
     private void ToggleVideoSettingsUI()
     {
@@ -72,12 +117,25 @@ public class SettingsUI : MonoBehaviour
 
     private void SaveSettings()
     {
-
+        _settingsSystem.SaveSettings();
     }
 
     private void ResetSettings()
     {
-
+        _settingsSystem.ResetSettings();
     }
+
+    private void Return()
+    {
+        ToggleSettings.ToggleSettingsMenu();
+    }
+
+}
+
+[System.Serializable]
+public class KeyCodeButton
+{
+    public string KeyCodeName;
+    public InputButton ThisKeyCodeButton;
 
 }

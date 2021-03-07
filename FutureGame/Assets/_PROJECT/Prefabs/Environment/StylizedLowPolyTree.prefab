@@ -178,8 +178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7c75149f00cbea44baf9ed28b82f5fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thisLoot: {fileID: 11400000, guid: e722036640b0aaf4395634029edeba25, type: 2}
   health: 50
-  weaponTypeAllowedToMakeDamage: 1
 --- !u!64 &5482211129330315450
 MeshCollider:
   m_ObjectHideFlags: 0

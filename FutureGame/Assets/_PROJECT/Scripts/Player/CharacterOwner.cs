@@ -12,6 +12,7 @@ public class CharacterOwner : MonoBehaviour
     private PlayerUI _playerUI;
     private CharacterStats _characterStats;
     private SpawnPlayer _spawnPlayer;
+    private PlayerDeath _playerDeath;
 
     public IInput Input { get { return _input; } private set { } }
     public IMovement Movement { get { return _movement; } private set { } }
@@ -20,6 +21,7 @@ public class CharacterOwner : MonoBehaviour
     public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
     public CharacterStats CharacterStats { get { return _characterStats; } private set { } }
     public SpawnPlayer SpawnPlayer { get { return _spawnPlayer; } private set { } }
+    public PlayerDeath PlayerDeath { get { return _playerDeath; } private set { } }
 
     private static CharacterOwner _instance;
 
@@ -41,6 +43,7 @@ public class CharacterOwner : MonoBehaviour
         _playerUI = GetComponent<PlayerUI>();
         _characterStats = GetComponent<CharacterStats>();
         _spawnPlayer = GetComponent<SpawnPlayer>();
+        _playerDeath = GetComponent<PlayerDeath>();
     }
 
     private void Start()

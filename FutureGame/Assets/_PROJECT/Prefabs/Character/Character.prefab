@@ -32,10 +32,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 100
-  speed: 0.7
   hasAttacked: 0
   animator: {fileID: 0}
   rightHandTransform: {fileID: 0}
+  _currentHitDetection: {fileID: 0}
 --- !u!1 &8923751912506442514
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 8923751912506442512}
   - component: {fileID: 8923751912506442515}
   - component: {fileID: 7489151022592715226}
+  - component: {fileID: 1954618977343866910}
   - component: {fileID: 868930748527652234}
   - component: {fileID: 6516491486780496984}
   m_Layer: 13
@@ -284,6 +285,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _statuses: []
+--- !u!114 &1954618977343866910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8923751912506442514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51253bfdf35b5cb43a0aea5a5fe4a158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &868930748527652234
 CapsuleCollider:
   m_ObjectHideFlags: 0

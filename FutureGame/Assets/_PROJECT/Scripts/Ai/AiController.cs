@@ -122,8 +122,6 @@ public class AiController : Character, IDamageable
         }
     }
 
-    public WeaponType WeaponType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
     private void Awake()
     {
         _aiFieldOfView = GetComponent<AiFieldOfView>();
@@ -166,7 +164,7 @@ public class AiController : Character, IDamageable
 
                 _aiPathfinding.SetAgentDestination(_roamPosition);
 
-                float reachedPositionDistance = 3f;
+                float reachedPositionDistance = 2f;
                 if (Vector3.Distance(transform.position, _roamPosition) < reachedPositionDistance)
                 {
                     _roamPosition = _aiPathfinding.RandomNavSphere(_startingPosition, Random.Range(minRoamRange, maxRoamRange), -1);
@@ -222,12 +220,16 @@ public class AiController : Character, IDamageable
 
                 _aiPathfinding.SetAgentDestination(transform.position);
 
+                if (CurrentTarget == null)
+                {
+                    currentState = AiState.roaming;
+                    return;
+                }
+
                 var lookPos = CurrentTarget.position - transform.position;
                 lookPos.y = 0;
                 var rotation = Quaternion.LookRotation(lookPos);
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
-
-                _aiPathfinding.ToggleMovement(false);
 
                 break;
                 #endregion

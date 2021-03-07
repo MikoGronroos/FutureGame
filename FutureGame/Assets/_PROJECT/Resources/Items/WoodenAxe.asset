@@ -21,3 +21,4 @@ MonoBehaviour:
   ThisEquipmentType: 4
   ItemObject: {fileID: 2151694624165097150, guid: 28b9191e8ae56a4449b7d678eb503c09, type: 3}
   ThisAnimatorOverrideController: {fileID: 22100000, guid: 35da7d2fabdf8b34b979fa7daf08a657, type: 2}
+  Damage: 25

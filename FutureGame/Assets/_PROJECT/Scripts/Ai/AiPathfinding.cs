@@ -32,11 +32,6 @@ public class AiPathfinding : MonoBehaviour
         return RandomNavSphere(origin, dist, layermask);
     }
 
-    public void ToggleMovement(bool value)
-    {
-        _agent.isStopped = value;
-    }
-
     public void SetAgentSpeed(float speed)
     {
         _agent.speed = speed;

@@ -13,4 +13,19 @@ public class SettingsSystem : MonoBehaviour
         OnSettingSystemAwake?.Invoke(currentSettings);
     }
 
+    public void AssignNewKeyCode(KeyCode keyCode, string name)
+    {
+        currentSettings.Controls.AssignKeyCode(name, keyCode);
+    }
+
+    public void SaveSettings()
+    {
+        Debug.Log("Saved Settings");
+    }
+
+    public void ResetSettings()
+    {
+        Debug.Log("Reset Settings");
+    }
+
 }

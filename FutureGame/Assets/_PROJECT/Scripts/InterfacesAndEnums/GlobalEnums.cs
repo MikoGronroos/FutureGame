@@ -14,14 +14,6 @@ public enum EquipmentType
     HandHeld
 }
 
-public enum WeaponType
-{
-    Sword,
-    Axe,
-    Pickaxe,
-    None
-}
-
 public enum ResourceType
 {
     Battery,

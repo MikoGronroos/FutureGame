@@ -18,8 +18,6 @@ public class CharacterStats : Character, IDamageable
 
     [SerializeField] private bool isUsingStamina;
 
-    [SerializeField] private WeaponType weaponTypeAllowedToMakeDamage;
-
     private CharacterOwner _charOwner;
 
     public float MaxHealth { get { return maxHealth; } private set { } }
@@ -35,9 +33,10 @@ public class CharacterStats : Character, IDamageable
             {
                 currentHealth = maxHealth;
             }
-            else if (currentHealth < 0)
+            else if (currentHealth <= 0)
             {
                 currentHealth = 0;
+                PlayerDied();
             }
             _charOwner.PlayerUI.UpdateHealthBar(currentHealth, maxHealth);
         }
@@ -96,7 +95,6 @@ public class CharacterStats : Character, IDamageable
         }
     }
 
-    public WeaponType WeaponType { get { return weaponTypeAllowedToMakeDamage; } set { } }
 
     private void Awake()
     {
@@ -107,10 +105,22 @@ public class CharacterStats : Character, IDamageable
         currentHunger = maxHunger;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            MakeDamage(25);
+        }
+    }
+
     public void MakeDamage(float amount)
     {
-        currentHealth -= amount;
-        _charOwner.PlayerUI.UpdateHealthBar(currentHealth, maxHealth);
+        CurrentHealth -= amount;
+    }
+
+    private void PlayerDied()
+    {
+        _charOwner.PlayerDeath.PlayerHasDied();
     }
 
     private void OnValidate()

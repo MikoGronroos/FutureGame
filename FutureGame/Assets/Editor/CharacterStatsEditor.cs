@@ -20,11 +20,14 @@ public class CharacterStatsEditor : Editor
         if (GUILayout.Button("Change Health") && Application.isPlaying)
         {
             Debug.Log($"Adding {AmountToAdd} health!");
-            if (CharacterOwner.Instance.CharacterStats.CurrentHealth - AmountToAdd < 0)
-            {
-                AmountToAdd = CharacterOwner.Instance.CharacterStats.CurrentHealth;
-            }
             CharacterOwner.Instance.CharacterStats.CurrentHealth += AmountToAdd;
         }
+
+        if (GUILayout.Button("Kill") && Application.isPlaying)
+        {
+            Debug.Log($"Killed Player");
+            CharacterOwner.Instance.CharacterStats.CurrentHealth = 0;
+        }
+
     }
 }
