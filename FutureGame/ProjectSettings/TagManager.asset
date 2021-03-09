@@ -8,6 +8,7 @@ TagManager:
   - MainCanvas
   - SmallChestUI
   - Weapon
+  - ProgressText
   layers:
   - Default
   - TransparentFX

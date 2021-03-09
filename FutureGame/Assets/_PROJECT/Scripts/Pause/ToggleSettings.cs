@@ -3,7 +3,7 @@
 public static class ToggleSettings
 {
 
-    private static bool _isOpen;
+    public static bool _isOpen;
 
     public static void ToggleSettingsMenu()
     {

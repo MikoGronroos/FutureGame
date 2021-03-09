@@ -7,4 +7,10 @@ public class MessageSender : MonoBehaviour
         return MessageSystem.Instance.GetMessageFromDictionary(name).SendMessage();
     }
 
+    public static bool SendMessageToClientsWithContent(string name, string content)
+    {
+        MessageSystem.Instance.GetMessageFromDictionary(name).OnReceivedMessage = content;
+        return MessageSystem.Instance.GetMessageFromDictionary(name).SendMessage();
+    }
+
 }

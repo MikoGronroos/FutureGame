@@ -120,7 +120,8 @@ MonoBehaviour:
   isRunning: 0
   runningSpeed: 3.9
   runningStaminaReduce: 1.32
-  jumpForce: 11
+  jumpForce: 4.8
+  onAirSpeedReduce: 0
   jumpingStaminaReduce: 11
   animator: {fileID: 430920315}
   isGrounded: 0
@@ -149,7 +150,6 @@ MonoBehaviour:
   currentHunger: 0
   currentWeight: 0
   isUsingStamina: 0
-  weaponTypeAllowedToMakeDamage: 3
 --- !u!114 &8923751912506442520
 MonoBehaviour:
   m_ObjectHideFlags: 0

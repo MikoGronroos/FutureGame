@@ -30,3 +30,5 @@ MonoBehaviour:
     PositiveKeyCode: 102
   - KeyCodeName: Jump
     PositiveKeyCode: 32
+  - KeyCodeName: Pause
+    PositiveKeyCode: 27

@@ -33,6 +33,11 @@ public class PlayerInput : MonoBehaviour, IInput
         return Input.GetKey(Settings.Instance.InputSettings.GetKeyCode("Run"));
     }
 
+    public bool PauseInput()
+    {
+        return Input.GetKeyDown(Settings.Instance.InputSettings.GetKeyCode("Pause"));
+    }
+
     public bool InteractInput()
     {
         return Input.GetKeyDown(Settings.Instance.InputSettings.GetKeyCode("Interact"));

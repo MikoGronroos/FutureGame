@@ -12,5 +12,4 @@ public class MessageReceiver : MonoBehaviour
     {
         MessageSystem.Instance.GetMessageFromDictionary(name).thisAction -= method;
     }
-
 }

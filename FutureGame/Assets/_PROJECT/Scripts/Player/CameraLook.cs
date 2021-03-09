@@ -4,6 +4,11 @@ public class CameraLook : MonoBehaviour
 {
 
     [SerializeField] private float sensitivity;
+
+    [Tooltip("Select A Percentage To Which Sensitivity Drops From Current Sensitivity")]
+    [Range(0,1)]
+    [SerializeField] private float onAirSensitivityReduce;
+
     [SerializeField] private Transform player;
     [SerializeField] private float turnSmoothTime;
     [SerializeField] private Transform cameraParentTransform;
@@ -12,11 +17,17 @@ public class CameraLook : MonoBehaviour
     private float xRotation = 0.0f;
     private float yRotation = 0.0f;
     private float _turnSmoothVelocity;
+    private CharacterOwner _charOwner;
 
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    private void Start()
+    {
+        _charOwner = CharacterOwner.Instance;
     }
 
     private void OnDisable()
@@ -31,6 +42,11 @@ public class CameraLook : MonoBehaviour
         RotatePlayer();
     }
 
+    private float CurrentSensitivity()
+    {
+        return _charOwner.GroundCheck.Grounded() ? sensitivity : sensitivity * onAirSensitivityReduce;
+    }
+
     private void UpdateCameraPosition()
     {
         if (transform == null || cameraParentTransform == null)
@@ -42,8 +58,8 @@ public class CameraLook : MonoBehaviour
 
     private void CameraRotation()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * sensitivity;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * sensitivity;
+        float mouseX = Input.GetAxisRaw("Mouse X") * CurrentSensitivity();
+        float mouseY = Input.GetAxisRaw("Mouse Y") * CurrentSensitivity();
 
         yRotation += mouseX;
         xRotation -= mouseY;

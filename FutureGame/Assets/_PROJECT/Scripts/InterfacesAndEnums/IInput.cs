@@ -12,4 +12,5 @@ public interface IInput
     bool InventoryInput();
     bool JumpInput();
     bool CrouchInput();
+    bool PauseInput();
 }

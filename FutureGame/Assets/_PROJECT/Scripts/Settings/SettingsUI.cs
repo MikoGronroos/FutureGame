@@ -74,15 +74,7 @@ public class SettingsUI : MonoBehaviour
 
     #region RefreshKeyCodes
 
-    private void RefreshAllKeyCodeButtons(Controls data)
-    {
-        foreach (CustomKeyCode keycode in data.GetKeyCodes())
-        {
-            RefreshButtonText(keycode.KeyCodeName, keycode.PositiveKeyCode.ToString());
-        }
-    }
-
-    private void RefreshButtonText(string name, string keycode)
+    public void RefreshButtonText(string name, string keycode)
     {
         foreach (KeyCodeButton button in keyCodeButtons)
         {
@@ -91,6 +83,14 @@ public class SettingsUI : MonoBehaviour
                 button.ThisKeyCodeButton.RefreshInputText(keycode);
                 return;
             }
+        }
+    }
+
+    private void RefreshAllKeyCodeButtons(Controls data)
+    {
+        foreach (CustomKeyCode keycode in data.GetKeyCodes())
+        {
+            RefreshButtonText(keycode.KeyCodeName, keycode.PositiveKeyCode.ToString());
         }
     }
 

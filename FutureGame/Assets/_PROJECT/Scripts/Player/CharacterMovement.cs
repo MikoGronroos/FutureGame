@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour, IMovement
 {
@@ -22,32 +21,36 @@ public class CharacterMovement : MonoBehaviour, IMovement
 
     [SerializeField] private bool isGrounded;
 
+    [SerializeField] private bool _hasJumped;
 
     private CharacterOwner _charOwner;
     private GroundCheck _groundCheck;
     private Rigidbody _rigidbody;
 
+    private float _currentSpeed;
+
     //Input
     private float _horizontalInput;
     private float _verticalInput;
-
-    [SerializeField] private bool _hasJumped;
 
     private float CurrentTargetForce
     {
         get
         {
+
+            _currentSpeed = walkingSpeed;
+
             if (isCrouching)
             {
-                return crouchingSpeed;
+                _currentSpeed = crouchingSpeed;
             }
 
             if (isRunning)
             {
-                return runningSpeed;
+                _currentSpeed = runningSpeed;
             }
 
-            return walkingSpeed;
+            return _currentSpeed;
         }
     }
 
@@ -70,30 +73,42 @@ public class CharacterMovement : MonoBehaviour, IMovement
     private void Update()
     {
         isGrounded = _groundCheck.Grounded();
-        AnimationHandler(_horizontalInput, _verticalInput);
         HandleInput();
     }
 
+    private void FixedUpdate()
+    {
+        if (_hasJumped)
+        {
+            AddJumpVelocity();
+        }
+        Movement(_horizontalInput, _verticalInput);
+    }
+
+    private void LateUpdate()
+    {
+        AnimationHandler(_horizontalInput, _verticalInput);
+    }
+
+
     private void AnimationHandler(float horizontalInput, float verticalInput)
     {
+        animator.SetBool("hasJumped", _hasJumped);
         animator.SetInteger("horizontalInput", (int)horizontalInput);
         animator.SetInteger("verticalInput", (int)verticalInput);
         animator.SetBool("isRunning", isRunning);
         animator.SetBool("isCrouching", isCrouching);
     }
 
-    private void FixedUpdate()
-    {
-        Movement(_horizontalInput, _verticalInput);
-        AddJumpVelocity();
-    }
-
     private void HandleInput()
     {
         _horizontalInput = _charOwner.Input.HorizontalInput();
         _verticalInput = _charOwner.Input.VerticalInput();
+        if (isGrounded && !_hasJumped)
+        {
+            _hasJumped = _charOwner.Input.JumpInput();
+        }
         isRunning = _charOwner.Input.RunInput();
-        _hasJumped = _charOwner.Input.JumpInput();
         isCrouching = _charOwner.Input.CrouchInput();
     }
 
@@ -116,19 +131,8 @@ public class CharacterMovement : MonoBehaviour, IMovement
 
     private void AddJumpVelocity()
     {
-        if (isGrounded)
-        {
-            _rigidbody.drag = 5f;
-
-            if (_hasJumped)
-            {
-                _rigidbody.drag = 0f;
-                Vector3 velocity = _rigidbody.velocity;
-                velocity = new Vector3(velocity.x, 0f, velocity.z);
-                _rigidbody.velocity = velocity;
-                _rigidbody.AddForce(new Vector3(0f, jumpForce, 0f), ForceMode.Impulse);
-                _charOwner.CharacterStats.CurrentStamina -= jumpingStaminaReduce;
-            }
-        }
+        _charOwner.CharacterStats.CurrentStamina -= jumpingStaminaReduce;
+        _rigidbody.velocity += Vector3.up * jumpForce;
+        _hasJumped = false;
     }
 }

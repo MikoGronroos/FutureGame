@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour
     private void StartGame()
     {
         CursorVisibility.SetCursorHidden();
-        SceneManager.LoadScene(1);
+        SceneLoader.Instance.LoadScene(SceneManager.LoadSceneAsync(1));
     }
 
     private void ToggleSettingsMenu()
